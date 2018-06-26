@@ -3,6 +3,7 @@ using BuilderInterpreter.Helper;
 using BuilderInterpreter.Interfaces;
 using BuilderInterpreter.Models;
 using BuilderInterpreter.Services;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using RestEase;
 using System;
@@ -24,6 +25,8 @@ namespace BuilderInterpreter
             container.AddSingleton<IUserContextService, UserContextService>();
             container.AddSingleton<StateMachineService>();
             container.AddSingleton<BlipChannel>();
+            container.AddSingleton<IMemoryCache, MemoryCache>();
+            container.AddSingleton<UserSemaphoreService>();
             container.AddSingleton(noAction);
             container.AddSingleton(await BotFlowFactory(container));
 

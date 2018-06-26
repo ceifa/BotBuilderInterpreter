@@ -17,5 +17,7 @@ namespace BuilderInterpreter.Models
         public OutputCondition[] OutputConditions;
         [JsonProperty("$defaultOutput")]
         public OutputCondition DefaultOutput;
+        [JsonProperty("root")]
+        public bool IsRoot;
     }
 }

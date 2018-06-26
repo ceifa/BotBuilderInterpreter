@@ -1,0 +1,29 @@
+﻿using Microsoft.Extensions.Caching.Memory;
+using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+
+namespace BuilderInterpreter.Services
+{
+    public class UserSemaphoreService
+    {
+        private readonly IMemoryCache _memoryCache;
+
+        public UserSemaphoreService(IMemoryCache memoryCache)
+        {
+            _memoryCache = memoryCache;
+        }
+
+        public async Task<SemaphoreSlim> GetSemaphoreByUserIdentity(string identity)
+        {
+            return await _memoryCache.GetOrCreateAsync(identity, factory => 
+            {
+                factory.SlidingExpiration = TimeSpan.FromMinutes(30);
+                return Task.FromResult(new SemaphoreSlim(1));
+            });
+        }
+    }
+}
