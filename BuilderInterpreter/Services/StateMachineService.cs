@@ -1,0 +1,82 @@
+﻿using BuilderInterpreter.Extensions;
+using BuilderInterpreter.Helper;
+using BuilderInterpreter.Interfaces;
+using BuilderInterpreter.Models;
+using BuilderInterpreter.Enums;
+using Lime.Protocol;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using System.Threading;
+
+namespace BuilderInterpreter.Services
+{
+    public class StateMachineService
+    {
+        private const string InitialState = "onboarding";
+        private const string NoActionKeyword = "#noaction#";
+
+        private readonly BotFlow _botFlow;        
+        private readonly IUserContextService _userContext;
+        private readonly INoAction _noAction;
+
+        public StateMachineService(BotFlow botFlow, IUserContextService userContext, INoAction noAction)
+        {
+            _userContext = userContext;
+            _botFlow = botFlow;
+            _noAction = noAction;
+        }
+
+        public async Task<Document[]> HandleUserInput(string userIdentity, string input)
+        {
+            var userContext = await _userContext.GetUserContext(userIdentity);
+            var stateId = userContext.StateId;
+
+            if (string.IsNullOrEmpty(stateId))
+                stateId = InitialState;
+
+            var state = _botFlow.States.SingleOrDefault(x => x.Key == stateId).Value;
+
+            if (state == default(State))
+            {
+                stateId = InitialState;
+                state = _botFlow.States.SingleOrDefault(x => x.Key == stateId).Value;
+            }
+
+            var oldInput = state.InteractionActions.Single(x => x.Input != null).Input;
+            if (!string.IsNullOrEmpty(oldInput.Variable))
+                userContext.Variables[oldInput.Variable] = input;
+
+            var documents = new List<Document>();
+
+            do
+            {
+                var newStateId = StateMachineHelper.GetNewStateId(input, userContext.Variables, state.OutputConditions, state.DefaultOutput);
+                state = _botFlow.States.Single(x => x.Key == newStateId).Value;
+
+                state.InteractionActions.Where(x => x.Input == null).ForEach(async x =>
+                {
+                    var content = x.Action.Message.Content;
+
+                    var variables = userContext.Variables.Concat(_botFlow.GlobalVariables).ToDictionary(z => z.Key, z => z.Value);
+                    content = StateMachineHelper.GetDocumentWithVariablesReplaced(content, content.GetMediaType(), variables);
+
+                    if (_noAction != null && content.ToString().StartsWith(NoActionKeyword))
+                        await _noAction.ExecuteNoAction(userIdentity, content.ToString().Remove(0, NoActionKeyword.Length), userContext);
+                    else
+                        documents.Add(content);
+                });
+            } while (!state.InteractionActions.Any(x => x.Input != null && !x.Input.Bypass));
+
+            userContext.FirstInteraction = false;
+            userContext.StateId = state.Id;
+            await _userContext.SetUserContext(userIdentity, userContext);
+
+            return documents.ToArray();
+        }
+    }
+}
