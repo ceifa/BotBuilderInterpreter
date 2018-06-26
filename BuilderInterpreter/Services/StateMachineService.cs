@@ -65,7 +65,8 @@ namespace BuilderInterpreter.Services
                     {
                         var content = x.Action.Message.Content;
 
-                        var variables = userContext.Variables.Concat(_botFlow.GlobalVariables).ToDictionary(z => z.Key, z => z.Value);
+                        var variables = userContext.Variables;
+                        variables.Add("config", _botFlow.GlobalVariables);
                         content = StateMachineHelper.GetDocumentWithVariablesReplaced(content, content.GetMediaType(), variables);
 
                         if (_noAction != null && content.ToString().StartsWith(NoActionKeyword))
