@@ -1,5 +1,6 @@
 ﻿using BuilderInterpreter.Interfaces;
 using BuilderInterpreter.Models;
+using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,33 +10,52 @@ namespace BuilderInterpreter.Services
 {
     class UserContextService : IUserContextService
     {
-        private readonly BucketBaseService _bucketService;
+        private const string CoreKeyword = "BotCore";
+        private const string BucketKeyword = nameof(UserContext);
 
-        public UserContextService(BucketBaseService bucketService)
+        private readonly BucketBaseService _bucketService;
+        private readonly IMemoryCache _memoryCache;
+
+        public UserContextService(BucketBaseService bucketService, IMemoryCache memoryCache)
         {
             _bucketService = bucketService;
+            _memoryCache = memoryCache;
         }
 
-        public async Task<UserContext> GetUserContext(string userIdentity)
+        public Task<UserContext> GetUserContext(string userIdentity)
         {
             userIdentity = Uri.EscapeDataString(userIdentity);
-            var userContext = await _bucketService.GetBucketObjectAsync<UserContext>(userIdentity);
+            var bucketIdentifier = GetBucketIdentifier(userIdentity);
 
-            if (userContext == default(UserContext))
-                userContext = new UserContext
-                {
-                    Identity = userIdentity,
-                    Variables = new Dictionary<string, object>(),
-                    FirstInteraction = true
-                };
+            return _memoryCache.GetOrCreateAsync(userIdentity, async factory =>
+            {
+                factory.SlidingExpiration = TimeSpan.FromMinutes(10);
 
-            return userContext;
+                var userContext = await _bucketService.GetBucketObjectAsync<UserContext>(bucketIdentifier);
+
+                if (userContext == default(UserContext))
+                    userContext = new UserContext
+                    {
+                        Identity = userIdentity,
+                        Variables = new Dictionary<string, object>(),
+                        FirstInteraction = true
+                    };
+
+                return userContext;
+            });
         }
 
-        public Task<bool> SetUserContext(string userIdentity, UserContext userContext)
+        public async Task<bool> SetUserContext(string userIdentity, UserContext userContext)
         {
             userIdentity = Uri.EscapeDataString(userIdentity);
-            return _bucketService.SetBucketObjectAsync(userIdentity, userContext, TimeSpan.FromDays(2));
+            var bucketIdentifier = GetBucketIdentifier(userIdentity);
+
+            var bucketSaveSuccess = await _bucketService.SetBucketObjectAsync(bucketIdentifier, userContext, TimeSpan.FromDays(2));
+            var memoryCacheSaveSuccess = _memoryCache.Set(userIdentity, userContext) != null;
+
+            return bucketSaveSuccess && memoryCacheSaveSuccess;
         }
+
+        private string GetBucketIdentifier(string userIdentity) => $"{BucketKeyword}_{userIdentity}_{CoreKeyword}";
     }
 }

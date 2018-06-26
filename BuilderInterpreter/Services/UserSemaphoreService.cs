@@ -17,9 +17,9 @@ namespace BuilderInterpreter.Services
             _memoryCache = memoryCache;
         }
 
-        public async Task<SemaphoreSlim> GetSemaphoreByUserIdentity(string identity)
+        public Task<SemaphoreSlim> GetSemaphoreByUserIdentity(string identity)
         {
-            return await _memoryCache.GetOrCreateAsync(identity, factory => 
+            return _memoryCache.GetOrCreateAsync(identity, factory => 
             {
                 factory.SlidingExpiration = TimeSpan.FromMinutes(30);
                 return Task.FromResult(new SemaphoreSlim(1));
