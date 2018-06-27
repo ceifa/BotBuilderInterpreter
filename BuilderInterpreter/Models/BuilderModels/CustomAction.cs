@@ -1,5 +1,6 @@
 ﻿using BuilderInterpreter.Comms;
 using BuilderInterpreter.Enums;
+using BuilderInterpreter.Interfaces;
 using Newtonsoft.Json;
 
 namespace BuilderInterpreter.Models
@@ -11,6 +12,6 @@ namespace BuilderInterpreter.Models
         [JsonProperty("$title")]
         public string Title;
         [JsonProperty("settings")]
-        public CustomActionSettingsBase Settings;
+        public ICustomActionSettingsBase Settings;
     }
 }

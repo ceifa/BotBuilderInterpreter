@@ -22,7 +22,7 @@ namespace BuilderInterpreter.Services
         {
             var uri = $"/{CommandKeyword}/{key}";
             
-            var command = new BlipCommand(Guid.NewGuid().ToString())
+            var command = new BlipCommand
             {
                 Method = CommandMethod.DELETE,
                 Uri = uri,
@@ -37,7 +37,7 @@ namespace BuilderInterpreter.Services
         {
             var uri = $"/{CommandKeyword}/{key}";
 
-            var command = new BlipCommand(Guid.NewGuid().ToString())
+            var command = new BlipCommand
             {
                 Method = CommandMethod.GET,
                 Uri = uri
@@ -58,7 +58,7 @@ namespace BuilderInterpreter.Services
             if (expiration != default)
                 uri += $"?expiration={expiration.TotalMilliseconds}";
 
-            var command = new BlipCommand(Guid.NewGuid().ToString())
+            var command = new BlipCommand
             {
                 Method = CommandMethod.SET,
                 Uri = uri,

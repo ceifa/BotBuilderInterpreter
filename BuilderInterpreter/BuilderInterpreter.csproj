@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Jint" Version="2.11.58" />
     <PackageReference Include="Lime.Messaging" Version="0.7.278" />
     <PackageReference Include="Lime.Protocol.Serialization" Version="0.7.278" />
     <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="2.1.1" />

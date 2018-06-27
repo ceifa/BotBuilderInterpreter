@@ -1,21 +1,18 @@
-﻿using Newtonsoft.Json;
-using System.Collections.Generic;
+﻿using BuilderInterpreter.Helper;
+using BuilderInterpreter.Interfaces;
+using System;
+using System.Threading.Tasks;
 
 namespace BuilderInterpreter.Models.BuilderModels
 {
-    class MergeContact : CustomActionSettingsBase
+    class MergeContact : UserContact, ICustomActionSettingsBase
     {
-        [JsonProperty("name")]
-        public string Name;
-        [JsonProperty("email")]
-        public string Email;
-        [JsonProperty("phoneNumber")]
-        public string PhoneNumber;
-        [JsonProperty("city")]
-        public string City;
-        [JsonProperty("gender")]
-        public string Gender;
-        [JsonProperty("extras")]
-        public Dictionary<string, string> Extras;
+        public Task Execute(UserContext userContext, IServiceProvider serviceProvider)
+        {
+            var newContact = CustomActionHelper.MergeObjects(userContext.Contact, this);
+            userContext.Contact = newContact;
+
+            return Task.CompletedTask;
+        }
     }
 }

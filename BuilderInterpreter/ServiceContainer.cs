@@ -25,6 +25,8 @@ namespace BuilderInterpreter
             container.AddSingleton<BlipChannel>();
             container.AddSingleton<IMemoryCache, MemoryCache>();
             container.AddSingleton<UserSemaphoreService>();
+            container.AddSingleton<TrackEventService>();
+            container.AddSingleton<DistributionListService>();
             container.AddSingleton(noAction);
             container.AddSingleton(await BotFlowFactory(container));
 

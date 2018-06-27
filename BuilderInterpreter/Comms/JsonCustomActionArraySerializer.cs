@@ -1,4 +1,5 @@
 ﻿using BuilderInterpreter.Enums;
+using BuilderInterpreter.Interfaces;
 using BuilderInterpreter.Models;
 using BuilderInterpreter.Models.BuilderModels;
 using Newtonsoft.Json;
@@ -26,7 +27,7 @@ namespace BuilderInterpreter.Comms
 
                 var title = jObject["$title"].ToString();
                 var type = Enum.Parse<CustomActionType>(jObject["type"].ToString());
-                CustomActionSettingsBase settings;
+                ICustomActionSettingsBase settings;
 
                 switch (type)
                 {
@@ -34,7 +35,7 @@ namespace BuilderInterpreter.Comms
                         settings = JsonConvert.DeserializeObject<ProcessHttp>(jObject["settings"].ToString());
                         break;
                     case CustomActionType.TrackEvent:
-                        settings = JsonConvert.DeserializeObject<TrackEvent>(jObject["settings"].ToString());
+                        settings = JsonConvert.DeserializeObject<TrackEventAction>(jObject["settings"].ToString());
                         break;
                     case CustomActionType.MergeContact:
                         settings = JsonConvert.DeserializeObject<MergeContact>(jObject["settings"].ToString());

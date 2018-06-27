@@ -1,9 +1,9 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 
-namespace BuilderInterpreter.Models.BuilderModels
+namespace BuilderInterpreter.Models
 {
-    class TrackEvent : CustomActionSettingsBase
+    class TrackEvent
     {
         [JsonProperty("category")]
         public string Category;

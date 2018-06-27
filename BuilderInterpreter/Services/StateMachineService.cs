@@ -2,6 +2,7 @@
 using BuilderInterpreter.Interfaces;
 using BuilderInterpreter.Models;
 using Lime.Protocol;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,13 +16,15 @@ namespace BuilderInterpreter.Services
         private readonly BotFlow _botFlow;        
         private readonly IUserContextService _userContext;
         private readonly INoAction _noAction;
+        private readonly IServiceProvider _serviceProvider;
         private readonly UserSemaphoreService _userSemaphoreService;
 
-        public StateMachineService(BotFlow botFlow, IUserContextService userContext, INoAction noAction, UserSemaphoreService userSemaphoreService)
+        public StateMachineService(BotFlow botFlow, IUserContextService userContext, INoAction noAction, IServiceProvider serviceProvider, UserSemaphoreService userSemaphoreService)
         {
             _userContext = userContext;
             _botFlow = botFlow;
             _noAction = noAction;
+            _serviceProvider = serviceProvider;
             _userSemaphoreService = userSemaphoreService;
         }
 

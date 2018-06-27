@@ -17,13 +17,13 @@ namespace BuilderInterpreter.Helper
         private static readonly Regex TextVariablesRegex = new Regex(@"{{([a-zA-Z0-9\.@_\-\[\]]+)}}", RegexOptions.Compiled);
         private static DocumentSerializer _serializer = new DocumentSerializer();
 
-        public static string GetVariableValue(string variableName, Dictionary<string, object> variables)
+        public static object GetVariableValue(string variableName, Dictionary<string, object> variables)
         {
             var variableSplitted = Regex.Split(variableName, @"\.|(?=\[\d\])", RegexOptions.Compiled);
             if (variableSplitted.Length == 0 || !variables.ContainsKey(variableSplitted[0])) return null;
 
             var actual = variables[variableSplitted[0]];
-            if (variableSplitted.Length == 1) return actual.ToString();
+            if (variableSplitted.Length == 1) return actual;
 
             variableSplitted = variableSplitted.Skip(1).ToArray();
 
@@ -44,7 +44,7 @@ namespace BuilderInterpreter.Helper
                 if (actual == null) return null;
             }
 
-            return actual.ToString();
+            return actual;
         }
 
         public static Document GetDocumentWithVariablesReplaced(Document document, MediaType mediaType, Dictionary<string, object> variables)
@@ -58,7 +58,7 @@ namespace BuilderInterpreter.Helper
                 if (variableValues.ContainsKey(variableName)) continue;
                 var variableValue = GetVariableValue(variableName, variables);
                 if (variableValue == null) continue;
-                variableValues.Add(variableName, variableValue);
+                variableValues.Add(variableName, variableValue.ToString());
             }
 
             if (variableValues.Count > 0)
@@ -83,7 +83,7 @@ namespace BuilderInterpreter.Helper
                         case ConditionSource.Input:
                             return x.Values.Any(y => comparer(input, y));
                         case ConditionSource.Context:
-                            return x.Values.Any(y => comparer(StateMachineHelper.GetVariableValue(x.Variable, variables), y));
+                            return x.Values.Any(y => comparer(GetVariableValue(x.Variable, variables).ToString(), y));
                         default:
                             throw new NotImplementedException(nameof(x.Source));
                     }
