@@ -46,16 +46,16 @@ namespace BuilderInterpreter.Services
             var response = await _blipService.SendCommandAsync(command);
 
             if (response.Status != CommandStatus.SUCCESS)
-                return default(string);
+                return default;
 
             return JsonConvert.SerializeObject(response.Resource);
         }
 
-        public async Task<bool> SetBucketAsync(string key, object document, TimeSpan expiration = default(TimeSpan))
+        public async Task<bool> SetBucketAsync(string key, object document, TimeSpan expiration = default)
         {
             var uri = $"/{CommandKeyword}/{key}";
 
-            if (expiration != default(TimeSpan))
+            if (expiration != default)
                 uri += $"?expiration={expiration.TotalMilliseconds}";
 
             var command = new BlipCommand(Guid.NewGuid().ToString())

@@ -36,9 +36,9 @@ namespace BuilderInterpreter.Services
                 var userContext = await _userContext.GetUserContext(userIdentity);
                 var stateId = userContext.StateId;
 
-                var state = string.IsNullOrEmpty(stateId) ? default(State) : _botFlow.States.SingleOrDefault(x => x.Key == stateId).Value;
+                var state = string.IsNullOrEmpty(stateId) ? default : _botFlow.States.SingleOrDefault(x => x.Key == stateId).Value;
                 
-                if (state == default(State))
+                if (state == default)
                 {
                     state = _botFlow.States.Values.Single(x => x.IsRoot);
                 }

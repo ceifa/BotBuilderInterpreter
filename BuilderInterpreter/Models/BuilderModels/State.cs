@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using BuilderInterpreter.Comms;
+using Newtonsoft.Json;
 
 namespace BuilderInterpreter.Models
 {
@@ -10,6 +11,12 @@ namespace BuilderInterpreter.Models
         public string Title;
         [JsonProperty("$contentActions")]
         public InteractionAction[] InteractionActions;
+        [JsonProperty("$enteringCustomActions")]
+        [JsonConverter(typeof(JsonCustomActionArraySerializer))]
+        public CustomAction[] EnteringCustomActions;
+        [JsonProperty("$leavingCustomActions")]
+        [JsonConverter(typeof(JsonCustomActionArraySerializer))]
+        public CustomAction[] LeavingCustomActions;
         [JsonProperty("$conditionOutputs")]
         public OutputCondition[] OutputConditions;
         [JsonProperty("$defaultOutput")]

@@ -32,7 +32,7 @@ namespace BuilderInterpreter.Services
 
                 var userContext = await _bucketService.GetBucketObjectAsync<UserContext>(bucketIdentifier);
 
-                if (userContext == default(UserContext))
+                if (userContext == default)
                     userContext = new UserContext
                     {
                         Identity = userIdentity,
