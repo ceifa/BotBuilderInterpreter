@@ -21,7 +21,7 @@ namespace BuilderInterpreter.ChannelProvidersHelper
         public async Task MessageReceiverHelper(Message message, Func<Document, Task> sendMessageFunc)
         {
             var user = await _userContext.GetUserContext(message.From);
-            user.Variables["input"] = message;
+            user.Variables["message"] = message;
             await _userContext.SetUserContext(message.From, user);
 
             var documents = await _stateMachineService.HandleUserInput(message.From, message.Content.ToString());

@@ -47,6 +47,8 @@ namespace BuilderInterpreter.Services
                 if (!string.IsNullOrEmpty(oldInput.Variable))
                     userContext.Variables[oldInput.Variable] = input;
 
+                userContext.Variables["input"] = input;
+
                 var documents = new List<Document>();
 
                 do
@@ -59,7 +61,7 @@ namespace BuilderInterpreter.Services
                         var content = x.Action.Message.Content;
 
                         var variables = userContext.Variables;
-                        variables.Add("config", _botFlow.GlobalVariables);
+                        variables["config"] = _botFlow.GlobalVariables;
                         content = StateMachineHelper.GetDocumentWithVariablesReplaced(content, content.GetMediaType(), variables);
 
                         if (_noAction != null && content.ToString().StartsWith(NoActionKeyword))
