@@ -37,6 +37,7 @@ namespace BuilderInterpreter
                     {
                         Identity = userIdentity,
                         Variables = new Dictionary<string, object>(),
+                        Contact = new UserContact(),
                         FirstInteraction = true
                     };
 

@@ -9,9 +9,9 @@ namespace BuilderInterpreter.Helper
 {
     static class CustomActionHelper
     {
-        public static Task<HttpResponseMessage> ExecuteHttpRequest(this ProcessHttp processHttp)
+        public static async Task<HttpResponseMessage> ExecuteHttpRequest(this ProcessHttp processHttp)
         {
-            using (HttpClient httpClient = new HttpClient())
+            using (HttpClient httpClient = new HttpClient(new RetryHandler(1)))
             {
                 var requestMessage = new HttpRequestMessage
                 {
@@ -19,12 +19,17 @@ namespace BuilderInterpreter.Helper
                     Method = new HttpMethod(processHttp.Method.ToString())
                 };
 
-                processHttp.Headers.ForEach(x => requestMessage.Headers.Add(x.Key, x.Value));
+                processHttp.Headers.ForEach(x => requestMessage.Headers.TryAddWithoutValidation(x.Key, x.Value));
 
                 if (!string.IsNullOrEmpty(processHttp.Body))
-                    requestMessage.Content = new StringContent(processHttp.Body);
+                {
+                    var content = new StringContent(processHttp.Body);
+                    content.Headers.Clear();
+                    processHttp.Headers.ForEach(x => content.Headers.TryAddWithoutValidation(x.Key, x.Value));
+                    requestMessage.Content = content;
+                }
 
-                return httpClient.SendAsync(requestMessage);
+                return await httpClient.SendAsync(requestMessage);
             }
         }
 
@@ -37,8 +42,17 @@ namespace BuilderInterpreter.Helper
             foreach (var prop in properties)
             {
                 var value = prop.GetValue(objectToMerge, null);
-                if (value != null)
+                if (value != null && !(value is string && string.IsNullOrWhiteSpace(value.ToString())))
                     prop.SetValue(oldObject, value, null);
+            }
+
+            var fields = t.GetFields().Where(field => field.IsPublic);
+
+            foreach (var field in fields)
+            {
+                var value = field.GetValue(objectToMerge);
+                if (value != null && !(value is string && string.IsNullOrWhiteSpace(value.ToString())))
+                    field.SetValue(oldObject, value);
             }
 
             return oldObject;
