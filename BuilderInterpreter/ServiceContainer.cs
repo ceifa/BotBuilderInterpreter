@@ -23,20 +23,20 @@ namespace BuilderInterpreter
             container.AddSingleton<IUserContextService, UserContextService>();
             container.AddSingleton<StateMachineService>();
             container.AddSingleton<BlipChannel>();
-            container.AddSingleton<IMemoryCache, MemoryCache>();
             container.AddSingleton<UserSemaphoreService>();
             container.AddSingleton<TrackEventService>();
             container.AddSingleton<DistributionListService>();
             container.AddSingleton(noAction);
+            container.AddMemoryCache();
             container.AddSingleton(await BotFlowFactory(container));
 
             return container;
         }
 
-        private static Task<BotFlow> BotFlowFactory(ServiceCollection container)
+        private static async Task<BotFlow> BotFlowFactory(ServiceCollection container)
         {
             var botFlowService = container.BuildServiceProvider().GetService<BotFlowService>();
-            var botFlow = botFlowService.GetBotFlow();
+            var botFlow = await botFlowService.GetBotFlow();
             if (botFlow == null) throw new NullReferenceException(nameof(botFlow));
             return botFlow;
         }

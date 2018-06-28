@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using BuilderInterpreter.Enums;
 using BuilderInterpreter.Interfaces;
 using BuilderInterpreter.Services;
+using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 
 namespace BuilderInterpreter.Models.BuilderModels
@@ -16,7 +17,7 @@ namespace BuilderInterpreter.Models.BuilderModels
 
         public async Task Execute(UserContext userContext, IServiceProvider serviceProvider)
         {
-            var distributionListService = (DistributionListService)serviceProvider.GetService(typeof(DistributionListService));
+            var distributionListService = serviceProvider.GetService<DistributionListService>();
 
             switch (Action)
             {

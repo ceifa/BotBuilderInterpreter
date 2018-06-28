@@ -19,6 +19,9 @@ namespace BuilderInterpreter.Services
         {
             if (string.IsNullOrEmpty(AuthorizationKey))
                 throw new ArgumentNullException("Authorization header is not present " + nameof(AuthorizationKey));
+            if (AuthorizationKey.IndexOf("Key ") != 0)
+                throw new InvalidOperationException("Invalid Authorization Key " + nameof(AuthorizationKey));
+
             _blipProvider.AuthorizationKey = AuthorizationKey;
             return _blipProvider.SendCommandAsync(command);
         }
