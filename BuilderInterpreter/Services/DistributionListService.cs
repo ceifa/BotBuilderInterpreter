@@ -1,9 +1,7 @@
-﻿using BuilderInterpreter.Enums;
-using BuilderInterpreter.Interfaces;
+﻿using BuilderInterpreter.Interfaces;
 using BuilderInterpreter.Models;
 using Lime.Protocol;
 using Newtonsoft.Json.Linq;
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -14,7 +12,6 @@ namespace BuilderInterpreter
         private const string To = "postmaster@broadcast.msging.net";
         private const string Type = "application/vnd.iris.distribution-list+json";
         private const string UriPrefix = "/lists";
-        private const string UriPostFix = "@broadcast.msging.net";
 
         private readonly IBlipService _blipService;
 
@@ -26,7 +23,7 @@ namespace BuilderInterpreter
         public async Task<bool> AddMemberOrCreateList(string listIdentity, string userIdentity)
         {
             var lists = await GetAllListsAsync();
-            var hasList = lists.Any(x => x == Uri.EscapeDataString(listIdentity));
+            var hasList = lists.Any(x => x == listIdentity);
 
             if (!hasList)
                 await CreateListAsync(listIdentity);
@@ -41,7 +38,7 @@ namespace BuilderInterpreter
                 To = To,
                 Method = Enums.CommandMethod.SET,
                 Type = "application/vnd.lime.identity",
-                Uri = $"{UriPrefix}/{Uri.EscapeDataString(listIdentity)}{UriPostFix}/recipients",
+                Uri = $"{UriPrefix}/{listIdentity}/recipients",
                 Resource = userIdentity
             });
 
@@ -54,7 +51,7 @@ namespace BuilderInterpreter
             {
                 To = To,
                 Method = Enums.CommandMethod.DELETE,
-                Uri = $"{UriPrefix}/{Uri.EscapeDataString(listIdentity)}{UriPostFix}/recipients/{userIdentity}",
+                Uri = $"{UriPrefix}/{listIdentity}/recipients/{userIdentity}",
             });
 
             return response.Status == Enums.CommandStatus.SUCCESS;
@@ -66,7 +63,7 @@ namespace BuilderInterpreter
 
             var response = await _blipService.SendCommandAsync(new BlipCommand
             {
-                To = $"{Uri.EscapeDataString(listIdentity)}{UriPostFix}",
+                To = $"{listIdentity}",
                 Type = message.GetMediaType().ToString(),
                 Content = content
             });
@@ -82,7 +79,7 @@ namespace BuilderInterpreter
                 Method = Enums.CommandMethod.SET,
                 Type = Type,
                 Uri = UriPrefix,
-                Resource = new { identity = $"{Uri.EscapeDataString(listIdentity)}{UriPostFix}" }
+                Resource = new { identity = $"{listIdentity}" }
             });
 
             return response.Status == Enums.CommandStatus.SUCCESS;

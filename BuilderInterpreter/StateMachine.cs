@@ -62,7 +62,7 @@ namespace BuilderInterpreter
                 {
                     state = _stateMachineService.GetNextUserState(userContext, state);
 
-                    _customActionService.ExecuteCustomActions(state.EnteringCustomActions, userContext);
+                    await _customActionService.ExecuteCustomActions(state.EnteringCustomActions, userContext);
 
                     state.InteractionActions.Where(x => x.Input == null).ForEach(async x =>
                     {
@@ -76,7 +76,7 @@ namespace BuilderInterpreter
                             documents.Add(content);
                     });
 
-                    _customActionService.ExecuteCustomActions(state.LeavingCustomActions, userContext);
+                    await _customActionService.ExecuteCustomActions(state.LeavingCustomActions, userContext);
                 } while (!state.InteractionActions.Any(x => x.Input != null && !x.Input.Bypass));
 
                 userContext.FirstInteraction = false;

@@ -1,9 +1,10 @@
 ﻿using BuilderInterpreter.Models;
+using System.Threading.Tasks;
 
 namespace BuilderInterpreter.Interfaces
 {
     public interface ICustomActionService
     {
-        void ExecuteCustomActions(CustomAction[] customActions, UserContext userContext);
+        Task ExecuteCustomActions(CustomAction[] customActions, UserContext userContext);
     }
 }

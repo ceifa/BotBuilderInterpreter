@@ -1,6 +1,7 @@
 ﻿using BuilderInterpreter.Interfaces;
 using BuilderInterpreter.Models;
 using System;
+using System.Threading.Tasks;
 
 namespace BuilderInterpreter.Services
 {
@@ -13,11 +14,11 @@ namespace BuilderInterpreter.Services
             _serviceProvider = serviceProvider;
         }
 
-        public void ExecuteCustomActions(CustomAction[] customActions, UserContext userContext)
+        public async Task ExecuteCustomActions(CustomAction[] customActions, UserContext userContext)
         {
             foreach (var customAction in customActions)
             {
-                customAction.Settings.Execute(userContext, _serviceProvider);
+                await customAction.Settings.Execute(userContext, _serviceProvider);
             }
         }
     }
