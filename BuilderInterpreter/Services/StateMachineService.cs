@@ -1,88 +1,109 @@
-﻿using BuilderInterpreter.Helper;
+﻿using BuilderInterpreter.Enums;
+using BuilderInterpreter.Extensions;
 using BuilderInterpreter.Interfaces;
 using BuilderInterpreter.Models;
-using Lime.Protocol;
 using System;
-using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
-using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 
-namespace BuilderInterpreter.Services
+namespace BuilderInterpreter
 {
-    public class StateMachineService
+    public class StateMachineService : IStateMachineService
     {
-        private const string NoActionKeyword = "#noaction#";
+        private readonly BotFlow _botFlow;
+        private readonly IVariableService _variableService;
 
-        private readonly BotFlow _botFlow;        
-        private readonly IUserContextService _userContext;
-        private readonly INoAction _noAction;
-        private readonly IServiceProvider _serviceProvider;
-        private readonly UserSemaphoreService _userSemaphoreService;
-
-        public StateMachineService(BotFlow botFlow, IUserContextService userContext, INoAction noAction, IServiceProvider serviceProvider, UserSemaphoreService userSemaphoreService)
+        public StateMachineService(BotFlow botFlow, IVariableService variableService)
         {
-            _userContext = userContext;
             _botFlow = botFlow;
-            _noAction = noAction;
-            _serviceProvider = serviceProvider;
-            _userSemaphoreService = userSemaphoreService;
+            _variableService = variableService;
         }
 
-        public async Task<Document[]> HandleUserInput(string userIdentity, string input)
+        public State GetCurrentUserState(UserContext userContext)
         {
-            var userSemaphore = await _userSemaphoreService.GetSemaphoreByUserIdentity(userIdentity);
+            var stateId = userContext.StateId;
 
-            try
+            var state = string.IsNullOrEmpty(stateId) ? default : _botFlow.States.SingleOrDefault(x => x.Key == stateId).Value;
+
+            if (state == default)
             {
-                await userSemaphore.WaitAsync();
-
-                var userContext = await _userContext.GetUserContext(userIdentity);
-                var stateId = userContext.StateId;
-
-                var state = string.IsNullOrEmpty(stateId) ? default : _botFlow.States.SingleOrDefault(x => x.Key == stateId).Value;
-                
-                if (state == default)
-                {
-                    state = _botFlow.States.Values.Single(x => x.IsRoot);
-                }
-
-                var oldInput = state.InteractionActions.Single(x => x.Input != null).Input;
-                if (!string.IsNullOrEmpty(oldInput.Variable))
-                    userContext.Variables[oldInput.Variable] = input;
-
-                userContext.Variables["input"] = input;
-
-                var documents = new List<Document>();
-
-                do
-                {
-                    var newStateId = StateMachineHelper.GetNewStateId(input, userContext.Variables, state.OutputConditions, state.DefaultOutput);
-                    state = _botFlow.States.Single(x => x.Key == newStateId).Value;
-
-                    state.InteractionActions.Where(x => x.Input == null).ForEach(async x =>
-                    {
-                        var content = x.Action.Message.Content;
-
-                        var variables = userContext.Variables;
-                        variables["config"] = _botFlow.GlobalVariables;
-                        content = StateMachineHelper.GetDocumentWithVariablesReplaced(content, content.GetMediaType(), variables);
-
-                        if (_noAction != null && content.ToString().StartsWith(NoActionKeyword))
-                            await _noAction.ExecuteNoAction(userIdentity, content.ToString().Remove(0, NoActionKeyword.Length), userContext);
-                        else
-                            documents.Add(content);
-                    });
-                } while (!state.InteractionActions.Any(x => x.Input != null && !x.Input.Bypass));
-
-                userContext.FirstInteraction = false;
-                userContext.StateId = state.Id;
-                await _userContext.SetUserContext(userIdentity, userContext);
-
-                return documents.ToArray();
+                state = _botFlow.States.Values.Single(x => x.IsRoot);
             }
-            finally
+
+            return state;
+        }
+
+        public State GetNextUserState(UserContext userContext, State lastState)
+        {
+            var nextStateId = lastState.DefaultOutput.StateId;
+
+            foreach (var outputCondition in lastState.OutputConditions)
             {
-                userSemaphore.Release();
+                var matchCondition = outputCondition.Conditions.All(x =>
+                {
+                    var comparer = CompareCondition(x.Comparison);
+                    var input = _variableService.GetVariableValue("input", userContext.Variables).ToString();
+
+                    switch (x.Source)
+                    {
+                        case ConditionSource.Input:
+                            return x.Values.Any(y => comparer(input, y));
+                        case ConditionSource.Context:
+                            return x.Values.Any(y => comparer(_variableService.ReplaceVariablesInString(x.Variable, userContext.Variables), y));
+                        default:
+                            throw new NotImplementedException(nameof(x.Source));
+                    }
+                });
+
+                if (matchCondition)
+                {
+                    nextStateId = outputCondition.StateId;
+                    break;
+                }
+            }
+
+            return _botFlow.States.Single(x => x.Key == nextStateId).Value;
+        }
+
+        private Func<string, string, bool> CompareCondition(ConditionComparison conditionComparison)
+        {
+            switch (conditionComparison)
+            {
+                case ConditionComparison.Equals:
+                    return (v1, v2) => string.Compare(v1, v2, CultureInfo.InvariantCulture, CompareOptions.IgnoreNonSpace | CompareOptions.IgnoreCase) == 0;
+
+                case ConditionComparison.NotEquals:
+                    return (v1, v2) => string.Compare(v1, v2, CultureInfo.InvariantCulture, CompareOptions.IgnoreNonSpace | CompareOptions.IgnoreCase) != 0;
+
+                case ConditionComparison.Contains:
+                    return (v1, v2) => v1 != null && v2 != null && v1.IndexOf(v2, StringComparison.OrdinalIgnoreCase) >= 0;
+
+                case ConditionComparison.StartsWith:
+                    return (v1, v2) => v1 != null && v2 != null && v1.StartsWith(v2, StringComparison.OrdinalIgnoreCase);
+
+                case ConditionComparison.EndsWith:
+                    return (v1, v2) => v1 != null && v2 != null && v1.EndsWith(v2, StringComparison.OrdinalIgnoreCase);
+
+                case ConditionComparison.Matches:
+                    return (v1, v2) => v1 != null && v2 != null && Regex.IsMatch(v1, v2);
+
+                case ConditionComparison.ApproximateTo:
+                    return (v1, v2) => v1 != null && v2 != null && v1.ToLowerInvariant().CalculateLevenshteinDistance(v2.ToLowerInvariant()) <= Math.Ceiling(v1.Length * 0.25);
+
+                case ConditionComparison.GreaterThan:
+                    return (v1, v2) => decimal.TryParse(v1, out var n1) && decimal.TryParse(v2, out var n2) && n1 > n2;
+
+                case ConditionComparison.LessThan:
+                    return (v1, v2) => decimal.TryParse(v1, out var n1) && decimal.TryParse(v2, out var n2) && n1 < n2;
+
+                case ConditionComparison.GreaterThanOrEquals:
+                    return (v1, v2) => decimal.TryParse(v1, out var n1) && decimal.TryParse(v2, out var n2) && n1 >= n2;
+
+                case ConditionComparison.LessThanOrEquals:
+                    return (v1, v2) => decimal.TryParse(v1, out var n1) && decimal.TryParse(v2, out var n2) && n1 <= n2;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(conditionComparison));
             }
         }
     }

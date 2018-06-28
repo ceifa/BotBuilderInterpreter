@@ -12,7 +12,7 @@ namespace BuilderInterpreter.Helper
         public RetryHandler() : base(new HttpClientHandler())
         {
         }
-        
+
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             var response = new HttpResponseMessage();
@@ -22,7 +22,7 @@ namespace BuilderInterpreter.Helper
             {
                 try
                 {
-                    response = base.SendAsync(request, cancellationToken).Result;
+                    response = await base.SendAsync(request, cancellationToken);
                 }
                 catch (Exception e)
                 {

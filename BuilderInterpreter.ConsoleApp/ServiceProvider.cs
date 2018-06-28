@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using BuilderInterpreter.Models;
+using Microsoft.Extensions.DependencyInjection;
 using System.Threading.Tasks;
 using Take.Blip.Client;
 
@@ -6,9 +7,14 @@ namespace BuilderInterpreter.ConsoleApp
 {
     static class ServiceProvider
     {
-        public static async Task<Microsoft.Extensions.DependencyInjection.ServiceProvider> RegisterServices(IBlipClient blipClient)
+        public static async Task<Microsoft.Extensions.DependencyInjection.ServiceProvider> RegisterServices(IBlipClient blipClient, BotCore botCore)
         {
-            var services = await new BotCore().Start("Key dGVzdGUxNDQ6dkNDb1hSeTNaYUtDVEkxMnNzNWE=").RegisterDependecies(new NoAction());
+            var configuration = new Configuration
+            {
+                AuthorizationKey = "Key dGVzdGUxNDQ6dkNDb1hSeTNaYUtDVEkxMnNzNWE="
+            };
+
+            var services = await botCore.RegisterDependecies(configuration, new NoAction());
             services.AddSingleton<MessageReceiver>();
             services.AddSingleton(blipClient);
             return services.BuildServiceProvider();

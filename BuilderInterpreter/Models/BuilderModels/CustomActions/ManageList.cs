@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using BuilderInterpreter.Enums;
 using BuilderInterpreter.Interfaces;
-using BuilderInterpreter.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 
@@ -17,15 +16,18 @@ namespace BuilderInterpreter.Models.BuilderModels
 
         public async Task Execute(UserContext userContext, IServiceProvider serviceProvider)
         {
-            var distributionListService = serviceProvider.GetService<DistributionListService>();
+            var distributionListService = serviceProvider.GetService<IDistributionListService>();
+            var variableService = serviceProvider.GetService<IVariableService>();
+
+            var listNameReplaced = variableService.ReplaceVariablesInString(ListName, userContext.Variables);
 
             switch (Action)
             {
                 case ManageListAction.Add:
-                    await distributionListService.AddMemberOrCreateList(ListName, userContext.Identity);
+                    await distributionListService.AddMemberOrCreateList(listNameReplaced, userContext.Identity);
                     break;
                 case ManageListAction.Remove:
-                    await distributionListService.RemoveMemberFromList(ListName, userContext.Identity);
+                    await distributionListService.RemoveMemberFromList(listNameReplaced, userContext.Identity);
                     break;
                 default:
                     throw new NotImplementedException(nameof(Action));

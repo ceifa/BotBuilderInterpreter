@@ -1,16 +1,17 @@
 ﻿using BuilderInterpreter.Enums;
+using BuilderInterpreter.Interfaces;
 using BuilderInterpreter.Models;
 using Newtonsoft.Json.Linq;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BuilderInterpreter.Services
+namespace BuilderInterpreter
 {
-    class TrackEventService
+    class TrackEventService : ITrackEventService
     {
-        private readonly BlipService _blipService;
+        private readonly IBlipService _blipService;
 
-        public TrackEventService(BlipService blipService)
+        public TrackEventService(IBlipService blipService)
         {
             _blipService = blipService;
         }

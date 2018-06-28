@@ -1,11 +1,12 @@
-﻿using Microsoft.Extensions.Caching.Memory;
+﻿using BuilderInterpreter.Interfaces;
+using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace BuilderInterpreter.Services
+namespace BuilderInterpreter
 {
-    public class UserSemaphoreService
+    public class UserSemaphoreService : IUserSemaphoreService
     {
         private readonly IMemoryCache _memoryCache;
 

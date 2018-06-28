@@ -1,5 +1,6 @@
 ﻿using BuilderInterpreter.Helper;
 using BuilderInterpreter.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -24,12 +25,16 @@ namespace BuilderInterpreter.Models.BuilderModels
 
         public async Task Execute(UserContext userContext, IServiceProvider serviceProvider)
         {
-            var responseMessage = await this.ExecuteHttpRequest();
+            var variableService = serviceProvider.GetService<IVariableService>();
+
+            var newProccessHttp = variableService.ReplaceVariablesInObject(this, userContext.Variables);
+            var responseMessage = await newProccessHttp.ExecuteHttpRequest();
+
             var responseBody = await responseMessage.Content.ReadAsStringAsync();
             var responseStatusCode = responseMessage.StatusCode;
 
-            userContext.Variables[ResponseBodyVariable] = responseBody;
-            userContext.Variables[ResponseStatusVariable] = (int)responseStatusCode;
+            variableService.AddOrUpdate(ResponseStatusVariable, (int)responseStatusCode, userContext.Variables);
+            variableService.AddOrUpdate(ResponseBodyVariable, responseBody, userContext.Variables);
         }
     }
 }

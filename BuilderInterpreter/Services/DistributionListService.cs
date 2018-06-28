@@ -1,4 +1,5 @@
 ﻿using BuilderInterpreter.Enums;
+using BuilderInterpreter.Interfaces;
 using BuilderInterpreter.Models;
 using Lime.Protocol;
 using Newtonsoft.Json.Linq;
@@ -6,18 +7,18 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BuilderInterpreter.Services
+namespace BuilderInterpreter
 {
-    public class DistributionListService
+    public class DistributionListService : IDistributionListService
     {
         private const string To = "postmaster@broadcast.msging.net";
         private const string Type = "application/vnd.iris.distribution-list+json";
         private const string UriPrefix = "/lists";
         private const string UriPostFix = "@broadcast.msging.net";
 
-        private readonly BlipService _blipService;
+        private readonly IBlipService _blipService;
 
-        public DistributionListService(BlipService blipService)
+        public DistributionListService(IBlipService blipService)
         {
             _blipService = blipService;
         }

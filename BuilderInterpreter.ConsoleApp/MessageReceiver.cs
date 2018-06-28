@@ -1,5 +1,5 @@
 ﻿using BuilderInterpreter.ChannelProvidersHelper;
-using BuilderInterpreter.Services;
+using BuilderInterpreter.Interfaces;
 using Lime.Protocol;
 using System;
 using System.Collections.Generic;
@@ -11,11 +11,11 @@ namespace BuilderInterpreter.ConsoleApp
 {
     class MessageReceiver
     {
-        private readonly StateMachineService _stateMachineService;
+        private readonly IStateMachine _stateMachineService;
         private readonly BlipChannel _blipChannel;
         private readonly IBlipClient _sender;
 
-        public MessageReceiver(StateMachineService stateMachineService, BlipChannel blipChannel, IBlipClient sender)
+        public MessageReceiver(IStateMachine stateMachineService, BlipChannel blipChannel, IBlipClient sender)
         {
             _stateMachineService = stateMachineService;
             _blipChannel = blipChannel;

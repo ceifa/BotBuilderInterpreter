@@ -3,7 +3,7 @@ using BuilderInterpreter.Helper;
 using BuilderInterpreter.Interfaces;
 using BuilderInterpreter.Models;
 using BuilderInterpreter.Services;
-using Microsoft.Extensions.Caching.Memory;
+using Lime.Protocol.Serialization;
 using Microsoft.Extensions.DependencyInjection;
 using RestEase;
 using System;
@@ -14,18 +14,23 @@ namespace BuilderInterpreter
 {
     public static class ServiceContainer
     {
-        public static async Task<ServiceCollection> ConfigureServices(ServiceCollection container, INoAction noAction)
+        public static async Task<ServiceCollection> ConfigureServices(ServiceCollection container, Configuration configuration, INoAction noAction)
         {
             container.AddSingleton(BlipProviderFactory());
-            container.AddSingleton<BlipService>();
-            container.AddSingleton<BucketBaseService>();
-            container.AddSingleton<BotFlowService>();
+            container.AddSingleton(configuration);
+            container.AddSingleton<IBlipService, BlipService>();
+            container.AddSingleton<IBucketBaseService, BucketBaseService>();
+            container.AddSingleton<IBotFlowService, BotFlowService>();
             container.AddSingleton<IUserContextService, UserContextService>();
-            container.AddSingleton<StateMachineService>();
+            container.AddSingleton<IStateMachine, StateMachine>();
+            container.AddSingleton<IUserSemaphoreService, UserSemaphoreService>();
+            container.AddSingleton<ITrackEventService, TrackEventService>();
+            container.AddSingleton<IDistributionListService, DistributionListService>();
+            container.AddSingleton<IVariableService, VariableService>();
+            container.AddSingleton<IStateMachineService, StateMachineService>();
+            container.AddSingleton<ICustomActionService, CustomActionService>();
             container.AddSingleton<BlipChannel>();
-            container.AddSingleton<UserSemaphoreService>();
-            container.AddSingleton<TrackEventService>();
-            container.AddSingleton<DistributionListService>();
+            container.AddSingleton<DocumentSerializer>();
             container.AddSingleton(noAction);
             container.AddMemoryCache();
             container.AddSingleton(await BotFlowFactory(container));
@@ -35,10 +40,12 @@ namespace BuilderInterpreter
 
         private static async Task<BotFlow> BotFlowFactory(ServiceCollection container)
         {
-            var botFlowService = container.BuildServiceProvider().GetService<BotFlowService>();
+            var provider = container.BuildServiceProvider();
+            
+            var botFlowService = provider.GetService<IBotFlowService>();
             var botFlow = await botFlowService.GetBotFlow();
-            if (botFlow == null) throw new NullReferenceException(nameof(botFlow));
-            return botFlow;
+            
+            return botFlow ?? throw new NullReferenceException(nameof(botFlow));
         }
 
         private static IBlipProvider BlipProviderFactory()

@@ -1,30 +1,23 @@
-﻿using BuilderInterpreter.Models;
-using BuilderInterpreter.Models.BuilderModels;
-using System.Threading.Tasks;
+﻿using BuilderInterpreter.Interfaces;
+using BuilderInterpreter.Models;
+using System;
 
 namespace BuilderInterpreter.Services
 {
-    class CustomActionService
+    class CustomActionService : ICustomActionService
     {
-        public async Task ExecuteCustomActions(CustomAction[] customActions)
+        private readonly IServiceProvider _serviceProvider;
+
+        public CustomActionService(IServiceProvider serviceProvider)
         {
-            foreach(var customAction in customActions)
+            _serviceProvider = serviceProvider;
+        }
+
+        public void ExecuteCustomActions(CustomAction[] customActions, UserContext userContext)
+        {
+            foreach (var customAction in customActions)
             {
-                switch (customAction.Settings)
-                {
-                    case ProcessHttp settings:
-                        break;
-                    case TrackEventAction settings:
-                        break;
-                    case MergeContact settings:
-                        break;
-                    case Redirect settings:
-                        break;
-                    case ManageList settings:
-                        break;
-                    case ExecuteScript settings:
-                        break;
-                }
+                customAction.Settings.Execute(userContext, _serviceProvider);
             }
         }
     }

@@ -5,15 +5,15 @@ using Newtonsoft.Json;
 using System;
 using System.Threading.Tasks;
 
-namespace BuilderInterpreter.Services
+namespace BuilderInterpreter
 {
     public class BucketService : IBucketService
     {
         private const string CommandKeyword = "buckets";
 
-        private readonly BlipService _blipService;
+        private readonly IBlipService _blipService;
 
-        public BucketService(BlipService blipService)
+        public BucketService(IBlipService blipService)
         {
             _blipService = blipService;
         }

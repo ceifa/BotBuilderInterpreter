@@ -3,27 +3,29 @@ using BuilderInterpreter.Models;
 using System;
 using System.Threading.Tasks;
 
-namespace BuilderInterpreter.Services
+namespace BuilderInterpreter
 {
-    public class BlipService
+    public class BlipService : IBlipService
     {
         private readonly IBlipProvider _blipProvider;
-        public static string AuthorizationKey { private get; set; }
+        private readonly Configuration _configuration;
 
-        public BlipService(IBlipProvider blipProvider)
+        public BlipService(IBlipProvider blipProvider, Configuration configuration)
         {
             _blipProvider = blipProvider;
+            _configuration = configuration;
         }
 
         public Task<BlipCommand> SendCommandAsync(BlipCommand command)
         {
-            if (string.IsNullOrEmpty(AuthorizationKey))
-                throw new ArgumentNullException("Authorization header is not present " + nameof(AuthorizationKey));
-            if (AuthorizationKey.IndexOf("Key ") != 0)
-                throw new InvalidOperationException("Invalid Authorization Key " + nameof(AuthorizationKey));
+            if (string.IsNullOrEmpty(_configuration.AuthorizationKey))
+                throw new ArgumentNullException("Authorization header is not present " + nameof(_configuration.AuthorizationKey));
+            if (_configuration.AuthorizationKey.IndexOf("Key ") != 0)
+                throw new InvalidOperationException("Invalid Authorization Key " + nameof(_configuration.AuthorizationKey));
 
-            _blipProvider.AuthorizationKey = AuthorizationKey;
-            return _blipProvider.SendCommandAsync(command);
+            _blipProvider.AuthorizationKey = _configuration.AuthorizationKey;
+
+            return _blipProvider.SendCommandAsync(command);         
         }
     }
 }

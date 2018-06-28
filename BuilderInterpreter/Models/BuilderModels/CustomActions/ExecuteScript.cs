@@ -1,4 +1,4 @@
-﻿using BuilderInterpreter.Helper;
+﻿using Microsoft.Extensions.DependencyInjection;
 using BuilderInterpreter.Interfaces;
 using Jint;
 using Newtonsoft.Json;
@@ -20,6 +20,8 @@ namespace BuilderInterpreter.Models.BuilderModels
 
         public Task Execute(UserContext userContext, IServiceProvider serviceProvider)
         {
+            var variableService = serviceProvider.GetService<IVariableService>();
+
             const string defaultFunctionName = "run";
             object[] arguments = null;
 
@@ -29,7 +31,7 @@ namespace BuilderInterpreter.Models.BuilderModels
 
                 for (int i = 0; i < arguments.Length; i++)
                 {
-                    arguments[i] = StateMachineHelper.GetVariableValue(InputVariables[i], userContext.Variables);
+                    arguments[i] = variableService.GetVariableValue(InputVariables[i], userContext.Variables);
                 }
             }
 
@@ -37,7 +39,7 @@ namespace BuilderInterpreter.Models.BuilderModels
             
             var result = arguments == null ? engine.Invoke(Function ?? defaultFunctionName) : engine.Invoke(Function ?? defaultFunctionName, arguments);
 
-            userContext.Variables[OutputVariable] = result?.ToObject();
+            variableService.AddOrUpdate(OutputVariable, result?.ToObject(), userContext.Variables);
 
             return Task.CompletedTask;
         }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace BuilderInterpreter.Models
 {
-    class TrackEvent
+    public class TrackEvent
     {
         [JsonProperty("category")]
         public string Category;

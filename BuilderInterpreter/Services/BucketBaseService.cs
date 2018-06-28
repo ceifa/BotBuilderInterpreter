@@ -1,12 +1,13 @@
-﻿using Newtonsoft.Json;
+﻿using BuilderInterpreter.Interfaces;
+using Newtonsoft.Json;
 using System;
 using System.Threading.Tasks;
 
-namespace BuilderInterpreter.Services
+namespace BuilderInterpreter
 {
-    public class BucketBaseService : BucketService
+    public class BucketBaseService : BucketService, IBucketBaseService
     {
-        public BucketBaseService(BlipService blipService) : base(blipService)
+        public BucketBaseService(IBlipService blipService) : base(blipService)
         {
         }
 

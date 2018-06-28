@@ -1,5 +1,4 @@
 ﻿using BuilderInterpreter.Interfaces;
-using BuilderInterpreter.Services;
 using Lime.Protocol;
 using System;
 using System.Collections.Generic;
@@ -9,22 +8,23 @@ namespace BuilderInterpreter.ChannelProvidersHelper
 {
     public class BlipChannel
     {
-        private readonly StateMachineService _stateMachineService;
+        private readonly IStateMachine _stateMachineService;
         private readonly IUserContextService _userContext;
+        private readonly IVariableService _variableService;
 
-        public BlipChannel(StateMachineService stateMachineService, IUserContextService userContext)
+        public BlipChannel(Interfaces.IStateMachine stateMachineService, IUserContextService userContext, IVariableService variableService)
         {
             _stateMachineService = stateMachineService;
             _userContext = userContext;
+            _variableService = variableService;
         }
 
         public async Task MessageReceiverHelper(Message message, Func<Document, Task> sendMessageFunc)
         {
             var user = await _userContext.GetUserContext(message.From);
-            user.Variables["message"] = message;
-            await _userContext.SetUserContext(message.From, user);
+            _variableService.AddOrUpdate("message", message, user.Variables);
 
-            var documents = await _stateMachineService.HandleUserInput(message.From, message.Content.ToString());
+            var documents = await _stateMachineService.HandleUserInput(message.From, message.Content.ToString(), user);
             var messages = new List<DocumentContainer>();
 
             foreach (var document in documents)

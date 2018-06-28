@@ -5,17 +5,17 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace BuilderInterpreter.Services
+namespace BuilderInterpreter
 {
     class UserContextService : IUserContextService
     {
         private const string CoreKeyword = "BotCore";
         private const string BucketKeyword = nameof(UserContext);
 
-        private readonly BucketBaseService _bucketService;
+        private readonly IBucketBaseService _bucketService;
         private readonly IMemoryCache _memoryCache;
 
-        public UserContextService(BucketBaseService bucketService, IMemoryCache memoryCache)
+        public UserContextService(IBucketBaseService bucketService, IMemoryCache memoryCache)
         {
             _bucketService = bucketService;
             _memoryCache = memoryCache;

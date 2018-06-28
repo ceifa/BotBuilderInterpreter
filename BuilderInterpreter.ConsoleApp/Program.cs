@@ -6,7 +6,6 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Take.Blip.Client;
-using BuilderInterpreter.Services;
 
 namespace BuilderInterpreter.ConsoleApp
 {
@@ -18,14 +17,16 @@ namespace BuilderInterpreter.ConsoleApp
         static void Main(string[] args)
         {
             _blipClient = new BlipClientBuilder().UsingAccessKey("teste144", "dkNDb1hSeTNaYUtDVEkxMnNzNWE=").Build();
-            Starter().GetAwaiter();
+            Starter().GetAwaiter().GetResult();
         }
 
         static async Task Starter()
         {
-            var provider = await ServiceProvider.RegisterServices(_blipClient);
+            var botCore = new BotCore();
+            var provider = await ServiceProvider.RegisterServices(_blipClient, botCore);
             _messageReceiver = provider.GetService<MessageReceiver>();
-            _blipClient.StartAsync(new ChannelListener(_messageReceiver.ReceiveMessage, x => Task.FromResult(true), x => Task.FromResult(true)), CancellationToken.None);
+            await _blipClient.StartAsync(new ChannelListener(_messageReceiver.ReceiveMessage, x => Task.FromResult(true), x => Task.FromResult(true)), CancellationToken.None);
+            Console.WriteLine("Bot Started");
             Console.ReadKey();
         }
     }

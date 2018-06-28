@@ -1,21 +1,16 @@
 ﻿using BuilderInterpreter.Interfaces;
-using BuilderInterpreter.Services;
+using BuilderInterpreter.Models;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Threading.Tasks;
 
 namespace BuilderInterpreter
 {
     public class BotCore
     {
-        public Task<ServiceCollection> RegisterDependecies(INoAction noAction, ServiceCollection serviceDescriptors = null)
+        public Task<ServiceCollection> RegisterDependecies(Configuration configuration, INoAction noAction, ServiceCollection serviceDescriptors = null)
         {
-            return ServiceContainer.ConfigureServices(serviceDescriptors ?? new ServiceCollection(), noAction);
-        }
-
-        public BotCore Start(string authKey)
-        {
-            BlipService.AuthorizationKey = authKey;
-            return this;
+            return ServiceContainer.ConfigureServices(serviceDescriptors ?? new ServiceCollection(), configuration, noAction);
         }
     }
 }

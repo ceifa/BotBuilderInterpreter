@@ -1,17 +1,18 @@
-﻿using BuilderInterpreter.Models;
+﻿using BuilderInterpreter.Interfaces;
+using BuilderInterpreter.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace BuilderInterpreter.Services
+namespace BuilderInterpreter
 {
-    public class BotFlowService
+    public class BotFlowService : IBotFlowService
     {
         private const string FlowBucketKey = "blip_portal:builder_working_flow";
         private const string ConfigurationBucketKey = "blip_portal:builder_working_configuration";
 
-        private readonly BucketBaseService _bucketService;
+        private readonly IBucketBaseService _bucketService;
 
-        public BotFlowService(BucketBaseService bucketService)
+        public BotFlowService(IBucketBaseService bucketService)
         {
             _bucketService = bucketService;
         }
