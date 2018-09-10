@@ -14,7 +14,7 @@ namespace BuilderInterpreter
 {
     public static class ServiceContainer
     {
-        public static async Task<ServiceCollection> ConfigureServices(ServiceCollection container, Configuration configuration, INoAction noAction)
+        internal static async Task<ServiceCollection> ConfigureServices(ServiceCollection container, Configuration configuration)
         {
             container.AddSingleton(BlipProviderFactory());
             container.AddSingleton(configuration);
@@ -31,20 +31,24 @@ namespace BuilderInterpreter
             container.AddSingleton<ICustomActionService, CustomActionService>();
             container.AddSingleton<BlipChannel>();
             container.AddSingleton<DocumentSerializer>();
-            container.AddSingleton(noAction);
             container.AddMemoryCache();
             container.AddSingleton(await BotFlowFactory(container));
 
             return container;
         }
 
+        internal static void AddNoActionSingleton<TNoAction>(ServiceCollection container) where TNoAction : class, INoAction
+        {
+            container.AddSingleton<INoAction, TNoAction>();
+        }
+
         private static async Task<BotFlow> BotFlowFactory(ServiceCollection container)
         {
             var provider = container.BuildServiceProvider();
-            
+
             var botFlowService = provider.GetService<IBotFlowService>();
             var botFlow = await botFlowService.GetBotFlow();
-            
+
             return botFlow ?? throw new NullReferenceException(nameof(botFlow));
         }
 

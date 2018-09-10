@@ -14,7 +14,6 @@ namespace BuilderInterpreter.ConsoleApp
                 AuthorizationKey = "Key dGVzdGUxNDQ6dkNDb1hSeTNaYUtDVEkxMnNzNWE="
             };
 
-            var services = await botCore.RegisterDependecies(configuration, new NoAction());
             services.AddSingleton<MessageReceiver>();
             services.AddSingleton(blipClient);
             return services.BuildServiceProvider();

@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -10,7 +7,7 @@ namespace BuilderInterpreter.Helper
 {
     class RetryHandler : DelegatingHandler
     {
-        private int MaxRetries = 3;
+        private readonly int MaxRetries = 3;
 
         public RetryHandler() : base(new HttpClientHandler())
         {

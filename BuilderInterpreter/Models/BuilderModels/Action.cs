@@ -7,10 +7,10 @@ namespace BuilderInterpreter.Models
     public class Action
     {
         [JsonProperty("type")]
-        public string Type;
+        public string Type { get; set; }
 
         [JsonProperty("settings")]
         [JsonConverter(typeof(JsonDocumentSerializer))]
-        public Message Message;
+        public Message Message { get; set; }
     }
 }

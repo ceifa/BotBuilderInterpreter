@@ -10,13 +10,16 @@ namespace BuilderInterpreter.Models.BuilderModels
     class ExecuteScript : ICustomActionSettingsBase
     {
         [JsonProperty("function")]
-        public string Function;
+        public string Function { get; set; }
+
         [JsonProperty("inputVariables")]
-        public string[] InputVariables;
+        public string[] InputVariables { get; set; }
+
         [JsonProperty("source")]
-        public string Source;
+        public string Source { get; set; }
+
         [JsonProperty("outputVariable")]
-        public string OutputVariable;
+        public string OutputVariable { get; set; }
 
         public Task Execute(UserContext userContext, IServiceProvider serviceProvider)
         {
@@ -25,7 +28,7 @@ namespace BuilderInterpreter.Models.BuilderModels
             const string defaultFunctionName = "run";
             object[] arguments = null;
 
-            if (InputVariables != null && InputVariables.Length > 0)
+            if (InputVariables?.Length > 0)
             {
                 arguments = new object[InputVariables.Length];
 

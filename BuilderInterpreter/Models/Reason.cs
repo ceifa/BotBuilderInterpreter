@@ -5,8 +5,9 @@ namespace BuilderInterpreter.Models
     public class Reason
     {
         [JsonProperty("code")]
-        public int Code;
+        public int Code { get; set; }
+
         [JsonProperty("description")]
-        public string Description;
+        public string Description { get; set; }
     }
 }

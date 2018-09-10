@@ -9,19 +9,15 @@ namespace BuilderInterpreter
 {
     public class StateMachine : IStateMachine
     {
-        private const string NoActionKeyword = "#noaction#";
-
-        private readonly BotFlow _botFlow;        
+        private readonly BotFlow _botFlow;
         private readonly IUserContextService _userContext;
-        private readonly INoAction _noAction;
         private readonly IUserSemaphoreService _userSemaphoreService;
         private readonly IVariableService _variableService;
         private readonly IStateMachineService _stateMachineService;
         private readonly ICustomActionService _customActionService;
 
-        public StateMachine(BotFlow botFlow, 
-            IUserContextService userContext, 
-            INoAction noAction,
+        public StateMachine(BotFlow botFlow,
+            IUserContextService userContext,
             IUserSemaphoreService userSemaphoreService,
             IVariableService variableService,
             ICustomActionService customActionService,
@@ -29,7 +25,6 @@ namespace BuilderInterpreter
         {
             _userContext = userContext;
             _botFlow = botFlow;
-            _noAction = noAction;
             _userSemaphoreService = userSemaphoreService;
             _variableService = variableService;
             _stateMachineService = stateMachineService;
@@ -64,20 +59,17 @@ namespace BuilderInterpreter
 
                     await _customActionService.ExecuteCustomActions(state.EnteringCustomActions, userContext);
 
-                    state.InteractionActions.Where(x => x.Input == null).ForEach(async x =>
+                    state.InteractionActions.Where(x => x.Input == default).ForEach(async x =>
                     {
                         var content = x.Action.Message.Content;
-                        
+
                         content = _variableService.ReplaceVariablesInDocument(content, userContext.Variables);
 
-                        if (_noAction != null && input.StartsWith(NoActionKeyword))
-                            await _noAction.ExecuteNoAction(userIdentity, content.ToString().Remove(0, NoActionKeyword.Length), userContext);
-                        else
-                            documents.Add(content);
+                        documents.Add(content);
                     });
 
                     await _customActionService.ExecuteCustomActions(state.LeavingCustomActions, userContext);
-                } while (!state.InteractionActions.Any(x => x.Input != null && !x.Input.Bypass));
+                } while (!state.InteractionActions.Any(x => x.Input?.Bypass == false));
 
                 userContext.FirstInteraction = false;
                 userContext.StateId = state.Id;

@@ -10,7 +10,7 @@ namespace BuilderInterpreter.Models
             GlobalVariables = globalVariables;
         }
 
-        public Dictionary<string, State> States;
-        public Dictionary<string, object> GlobalVariables;
+        public Dictionary<string, State> States { get; set; }
+        public Dictionary<string, object> GlobalVariables { get; set; }
     }
 }

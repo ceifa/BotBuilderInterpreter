@@ -19,9 +19,8 @@ namespace BuilderInterpreter.Comms
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             var customActions = new List<CustomAction>();
-            var jArray = JArray.Load(reader);
-            
-            foreach (var jObj in jArray)
+
+            foreach (var jObj in JArray.Load(reader))
             {
                 var jObject = JObject.FromObject(jObj);
 

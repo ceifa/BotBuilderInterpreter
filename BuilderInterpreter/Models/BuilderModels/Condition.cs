@@ -6,15 +6,15 @@ namespace BuilderInterpreter.Models
     public class Condition
     {
         [JsonProperty("source")]
-        public ConditionSource Source;
+        public ConditionSource Source { get; set; }
 
         [JsonProperty("comparison")]
-        public ConditionComparison Comparison;
+        public ConditionComparison Comparison { get; set; }
 
         [JsonProperty("values")]
-        public string[] Values;
+        public string[] Values { get; set; }
 
         [JsonProperty("variable")]
-        public string Variable;
+        public string Variable { get; set; }
     }
 }

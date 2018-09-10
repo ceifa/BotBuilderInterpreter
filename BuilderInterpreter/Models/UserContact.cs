@@ -1,22 +1,26 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace BuilderInterpreter.Models
 {
     public class UserContact
     {
         [JsonProperty("name")]
-        public string Name;
+        public string Name { get; set; }
+
         [JsonProperty("email")]
-        public string Email;
+        public string Email { get; set; }
+
         [JsonProperty("phoneNumber")]
-        public string PhoneNumber;
+        public string PhoneNumber { get; set; }
+
         [JsonProperty("city")]
-        public string City;
+        public string City { get; set; }
+
         [JsonProperty("gender")]
-        public string Gender;
+        public string Gender { get; set; }
+
         [JsonProperty("extras")]
-        public Dictionary<string, string> Extras;
+        public Dictionary<string, string> Extras { get; set; }
     }
 }

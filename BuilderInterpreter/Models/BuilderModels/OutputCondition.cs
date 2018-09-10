@@ -5,8 +5,9 @@ namespace BuilderInterpreter.Models
     public class OutputCondition
     {
         [JsonProperty("stateId")]
-        public string StateId;
+        public string StateId { get; set; }
+
         [JsonProperty("conditions")]
-        public Condition[] Conditions;
+        public Condition[] Conditions { get; set; }
     }
 }

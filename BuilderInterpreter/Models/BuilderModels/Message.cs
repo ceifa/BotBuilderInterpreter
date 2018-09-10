@@ -6,10 +6,12 @@ namespace BuilderInterpreter.Models.BuilderModels
     public class Message
     {
         [JsonProperty("id")]
-        public string Id;
+        public string Id { get; set; }
+
         [JsonProperty("type")]
-        public string Type;
+        public string Type { get; set; }
+
         [JsonProperty("content")]
-        public Document Content;
+        public Document Content { get; set; }
     }
 }

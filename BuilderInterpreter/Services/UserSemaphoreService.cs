@@ -20,7 +20,7 @@ namespace BuilderInterpreter
             return _memoryCache.GetOrCreateAsync(identity, factory => 
             {
                 factory.SlidingExpiration = TimeSpan.FromMinutes(30);
-                return Task.FromResult(new SemaphoreSlim(1));
+                return Task.FromResult(new SemaphoreSlim(1, 1));
             });
         }
     }

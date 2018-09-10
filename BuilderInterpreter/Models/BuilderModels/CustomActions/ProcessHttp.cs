@@ -11,17 +11,22 @@ namespace BuilderInterpreter.Models.BuilderModels
     class ProcessHttp : ICustomActionSettingsBase
     {
         [JsonProperty("method")]
-        public Enums.HttpMethod Method;
+        public Enums.HttpMethod Method { get; set; }
+
         [JsonProperty("headers")]
-        public Dictionary<string, string> Headers;
+        public Dictionary<string, string> Headers { get; set; }
+
         [JsonProperty("uri")]
-        public string Uri;
+        public string Uri { get; set; }
+
         [JsonProperty("body")]
-        public string Body;
+        public string Body { get; set; }
+
         [JsonProperty("responseStatusVariable")]
-        public string ResponseStatusVariable;
+        public string ResponseStatusVariable { get; set; }
+
         [JsonProperty("responseBodyVariable")]
-        public string ResponseBodyVariable;
+        public string ResponseBodyVariable { get; set; }
 
         public async Task Execute(UserContext userContext, IServiceProvider serviceProvider)
         {

@@ -5,9 +5,9 @@ namespace BuilderInterpreter.Models
     public class Input
     {
         [JsonProperty("bypass")]
-        public bool Bypass;
+        public bool Bypass { get; set; }
 
         [JsonProperty("variable")]
-        public string Variable;
+        public string Variable { get; set; }
     }
 }

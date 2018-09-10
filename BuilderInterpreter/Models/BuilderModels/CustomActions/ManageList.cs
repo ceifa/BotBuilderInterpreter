@@ -7,12 +7,13 @@ using Newtonsoft.Json;
 
 namespace BuilderInterpreter.Models.BuilderModels
 {
-    class ManageList : ICustomActionSettingsBase
+    internal class ManageList : ICustomActionSettingsBase
     {
         [JsonProperty("listName")]
-        public string ListName;
+        public string ListName { get; set; }
+
         [JsonProperty("action")]
-        public ManageListAction Action;
+        public ManageListAction Action { get; set; }
 
         public async Task Execute(UserContext userContext, IServiceProvider serviceProvider)
         {

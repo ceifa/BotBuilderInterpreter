@@ -20,12 +20,13 @@ namespace BuilderInterpreter
         {
             if (string.IsNullOrEmpty(_configuration.AuthorizationKey))
                 throw new ArgumentNullException("Authorization header is not present " + nameof(_configuration.AuthorizationKey));
-            if (_configuration.AuthorizationKey.IndexOf("Key ") != 0)
+
+            if (!_configuration.AuthorizationKey.StartsWith("Key "))
                 throw new InvalidOperationException("Invalid Authorization Key " + nameof(_configuration.AuthorizationKey));
 
             _blipProvider.AuthorizationKey = _configuration.AuthorizationKey;
 
-            return _blipProvider.SendCommandAsync(command);         
+            return _blipProvider.SendCommandAsync(command);
         }
     }
 }

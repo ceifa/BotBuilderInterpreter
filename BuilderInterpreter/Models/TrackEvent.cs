@@ -6,10 +6,12 @@ namespace BuilderInterpreter.Models
     public class TrackEvent
     {
         [JsonProperty("category")]
-        public string Category;
+        public string Category { get; set; }
+
         [JsonProperty("action")]
-        public string Action;
+        public string Action { get; set; }
+
         [JsonProperty("extras")]
-        public Dictionary<string, string> Extras;
+        public Dictionary<string, string> Extras { get; set; }
     }
 }

@@ -1,5 +1,4 @@
-﻿using BuilderInterpreter.Enums;
-using Lime.Protocol;
+﻿using Lime.Protocol;
 using Newtonsoft.Json;
 using System;
 
