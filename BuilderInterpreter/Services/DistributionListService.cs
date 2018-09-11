@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BuilderInterpreter
 {
-    public class DistributionListService : IDistributionListService
+    internal class DistributionListService : IDistributionListService
     {
         private const string To = "postmaster@broadcast.msging.net";
         private const string Type = "application/vnd.iris.distribution-list+json";
@@ -36,13 +36,13 @@ namespace BuilderInterpreter
             var response = await _blipService.SendCommandAsync(new BlipCommand
             {
                 To = To,
-                Method = Enums.CommandMethod.SET,
+                Method = CommandMethod.SET,
                 Type = "application/vnd.lime.identity",
                 Uri = $"{UriPrefix}/{listIdentity}/recipients",
                 Resource = userIdentity
             });
 
-            return response.Status == Enums.CommandStatus.SUCCESS;
+            return response.Status == CommandStatus.SUCCESS;
         }
 
         public async Task<bool> RemoveMemberFromList(string listIdentity, string userIdentity)
@@ -50,11 +50,11 @@ namespace BuilderInterpreter
             var response = await _blipService.SendCommandAsync(new BlipCommand
             {
                 To = To,
-                Method = Enums.CommandMethod.DELETE,
+                Method = CommandMethod.DELETE,
                 Uri = $"{UriPrefix}/{listIdentity}/recipients/{userIdentity}",
             });
 
-            return response.Status == Enums.CommandStatus.SUCCESS;
+            return response.Status == CommandStatus.SUCCESS;
         }
 
         public async Task<bool> SendMessageToList(string listIdentity, Document message)
@@ -63,12 +63,12 @@ namespace BuilderInterpreter
 
             var response = await _blipService.SendCommandAsync(new BlipCommand
             {
-                To = $"{listIdentity}",
+                To = listIdentity,
                 Type = message.GetMediaType().ToString(),
                 Content = content
             });
 
-            return response.Status == Enums.CommandStatus.SUCCESS;
+            return response.Status == CommandStatus.SUCCESS;
         }
 
         public async Task<bool> CreateListAsync(string listIdentity)
@@ -76,13 +76,13 @@ namespace BuilderInterpreter
             var response = await _blipService.SendCommandAsync(new BlipCommand
             {
                 To = To,
-                Method = Enums.CommandMethod.SET,
+                Method = CommandMethod.SET,
                 Type = Type,
                 Uri = UriPrefix,
-                Resource = new { identity = $"{listIdentity}" }
+                Resource = new { identity = listIdentity }
             });
 
-            return response.Status == Enums.CommandStatus.SUCCESS;
+            return response.Status == CommandStatus.SUCCESS;
         }
 
         public async Task<string[]> GetAllListsAsync()
@@ -90,11 +90,11 @@ namespace BuilderInterpreter
             var response = await _blipService.SendCommandAsync(new BlipCommand
             {
                 To = "postmaster@broadcast.msging.net",
-                Method = Enums.CommandMethod.GET,
+                Method = CommandMethod.GET,
                 Uri = UriPrefix
             });
 
-            if (response.Status != Enums.CommandStatus.SUCCESS)
+            if (response.Status != CommandStatus.SUCCESS)
                 return default;
 
             var items = JObject.FromObject(response.Resource)["items"];

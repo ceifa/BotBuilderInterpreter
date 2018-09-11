@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace BuilderInterpreter.Models.BuilderModels
 {
-    public class Message
+    internal class Message
     {
         [JsonProperty("id")]
         public string Id { get; set; }

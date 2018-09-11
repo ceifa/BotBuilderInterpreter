@@ -1,6 +1,6 @@
-﻿namespace BuilderInterpreter.Enums
+﻿namespace BuilderInterpreter
 {
-    enum ManageListAction
+    internal enum ManageListAction
     {
         Add,
         Remove

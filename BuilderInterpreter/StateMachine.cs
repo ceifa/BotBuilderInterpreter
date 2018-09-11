@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BuilderInterpreter
 {
-    public class StateMachine : IStateMachine
+    internal class StateMachine : IStateMachine
     {
         private readonly BotFlow _botFlow;
         private readonly IUserContextService _userContext;
@@ -42,6 +42,7 @@ namespace BuilderInterpreter
                 userContext = userContext ?? await _userContext.GetUserContext(userIdentity);
 
                 _variableService.AddOrUpdate("config", _botFlow.GlobalVariables, userContext.Variables);
+                _variableService.AddOrUpdate("contact", userContext.Contact, userContext.Variables);
 
                 var state = _stateMachineService.GetCurrentUserState(userContext);
 

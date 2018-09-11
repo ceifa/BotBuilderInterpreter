@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace BuilderInterpreter
 {
-    public interface ITrackEventService
+    internal interface ITrackEventService
     {
         Task<bool> RegisterEventTrack(TrackEvent trackEvent);
 

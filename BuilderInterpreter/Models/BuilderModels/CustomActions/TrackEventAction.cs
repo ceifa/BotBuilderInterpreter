@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace BuilderInterpreter.Models.BuilderModels
 {
-    class TrackEventAction : TrackEvent, ICustomActionSettingsBase
+    internal class TrackEventAction : TrackEvent, ICustomActionSettingsBase
     {
         public async Task Execute(UserContext userContext, IServiceProvider serviceProvider)
         {

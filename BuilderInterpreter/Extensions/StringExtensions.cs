@@ -2,7 +2,7 @@
 
 namespace BuilderInterpreter.Extensions
 {
-    static class StringExtensions
+    internal static class StringExtensions
     {
         public static int CalculateLevenshteinDistance(this string s, string t)
         {

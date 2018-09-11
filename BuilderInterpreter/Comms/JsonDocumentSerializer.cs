@@ -6,7 +6,7 @@ using System;
 
 namespace BuilderInterpreter.Comms
 {
-    class JsonDocumentSerializer : JsonConverter
+    internal class JsonDocumentSerializer : JsonConverter
     {
         private readonly DocumentSerializer _serializer;
 

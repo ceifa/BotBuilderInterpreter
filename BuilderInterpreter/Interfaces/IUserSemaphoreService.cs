@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace BuilderInterpreter.Interfaces
 {
-    public interface IUserSemaphoreService
+    internal interface IUserSemaphoreService
     {
         Task<SemaphoreSlim> GetSemaphoreByUserIdentity(string identity);
     }

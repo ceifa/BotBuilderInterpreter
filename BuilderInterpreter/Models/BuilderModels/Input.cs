@@ -2,7 +2,7 @@
 
 namespace BuilderInterpreter.Models
 {
-    public class Input
+    internal class Input
     {
         [JsonProperty("bypass")]
         public bool Bypass { get; set; }

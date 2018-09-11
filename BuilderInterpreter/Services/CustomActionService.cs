@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace BuilderInterpreter.Services
 {
-    class CustomActionService : ICustomActionService
+    internal class CustomActionService : ICustomActionService
     {
         private readonly IServiceProvider _serviceProvider;
 

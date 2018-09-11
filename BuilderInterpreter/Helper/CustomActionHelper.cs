@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BuilderInterpreter.Helper
 {
-    static class CustomActionHelper
+    internal static class CustomActionHelper
     {
         public static async Task<HttpResponseMessage> ExecuteHttpRequest(this ProcessHttp processHttp)
         {
@@ -16,7 +16,7 @@ namespace BuilderInterpreter.Helper
                 var requestMessage = new HttpRequestMessage
                 {
                     RequestUri = new Uri(processHttp.Uri),
-                    Method = new HttpMethod(processHttp.Method.ToString())
+                    Method = new System.Net.Http.HttpMethod(processHttp.Method.ToString())
                 };
 
                 processHttp.Headers.ForEach(x => requestMessage.Headers.TryAddWithoutValidation(x.Key, x.Value));

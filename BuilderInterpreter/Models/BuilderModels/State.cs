@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace BuilderInterpreter.Models
 {
-    public class State
+    internal class State
     {
         [JsonProperty("id")]
         public string Id { get; set; }

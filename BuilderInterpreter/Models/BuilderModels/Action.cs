@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace BuilderInterpreter.Models
 {
-    public class Action
+    internal class Action
     {
         [JsonProperty("type")]
         public string Type { get; set; }

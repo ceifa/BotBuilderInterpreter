@@ -2,7 +2,7 @@
 
 namespace BuilderInterpreter
 {
-    public interface IStateMachineService
+    internal interface IStateMachineService
     {
         State GetCurrentUserState(UserContext userContext);
 

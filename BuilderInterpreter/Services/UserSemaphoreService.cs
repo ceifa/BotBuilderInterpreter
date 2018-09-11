@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BuilderInterpreter
 {
-    public class UserSemaphoreService : IUserSemaphoreService
+    internal class UserSemaphoreService : IUserSemaphoreService
     {
         private readonly IMemoryCache _memoryCache;
 

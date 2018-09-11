@@ -2,7 +2,7 @@
 
 namespace BuilderInterpreter.Models
 {
-    public class OutputCondition
+    internal class OutputCondition
     {
         [JsonProperty("stateId")]
         public string StateId { get; set; }

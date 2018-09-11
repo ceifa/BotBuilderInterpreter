@@ -1,9 +1,8 @@
-﻿using BuilderInterpreter.Enums;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
 namespace BuilderInterpreter.Models
 {
-    public class Condition
+    internal class Condition
     {
         [JsonProperty("source")]
         public ConditionSource Source { get; set; }

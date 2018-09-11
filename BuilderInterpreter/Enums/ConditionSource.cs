@@ -1,6 +1,6 @@
-﻿namespace BuilderInterpreter.Enums
+﻿namespace BuilderInterpreter
 {
-    public enum ConditionSource
+    internal enum ConditionSource
     {
         Input,
         Context

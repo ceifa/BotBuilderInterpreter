@@ -20,7 +20,7 @@ namespace BuilderInterpreter
         {
         }
 
-        public Task<ServiceCollection> RegisterDependecies()
+        public Task<IServiceCollection> RegisterDependecies()
         {
             return ServiceContainer.ConfigureServices(_serviceDescriptors, _configuration);
         }

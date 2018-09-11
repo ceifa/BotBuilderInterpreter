@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace BuilderInterpreter.Interfaces
 {
-    public interface ICustomActionSettingsBase
+    internal interface ICustomActionSettingsBase
     {
         Task Execute(UserContext userContext, IServiceProvider serviceProvider);
     }

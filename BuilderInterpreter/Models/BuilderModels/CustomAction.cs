@@ -1,10 +1,9 @@
-﻿using BuilderInterpreter.Enums;
-using BuilderInterpreter.Interfaces;
+﻿using BuilderInterpreter.Interfaces;
 using Newtonsoft.Json;
 
 namespace BuilderInterpreter.Models
 {
-    public class CustomAction
+    internal class CustomAction
     {
         [JsonProperty("type")]
         public CustomActionType Type { get; set; }

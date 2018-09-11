@@ -1,6 +1,6 @@
-﻿namespace BuilderInterpreter.Enums
+﻿namespace BuilderInterpreter
 {
-    enum HttpMethod
+    internal enum HttpMethod
     {
         GET,
         POST,

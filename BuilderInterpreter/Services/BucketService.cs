@@ -1,5 +1,4 @@
-﻿using BuilderInterpreter.Enums;
-using BuilderInterpreter.Interfaces;
+﻿using BuilderInterpreter.Interfaces;
 using BuilderInterpreter.Models;
 using Newtonsoft.Json;
 using System;
@@ -7,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BuilderInterpreter
 {
-    public class BucketService : IBucketService
+    internal class BucketService : IBucketService
     {
         private const string CommandKeyword = "buckets";
 

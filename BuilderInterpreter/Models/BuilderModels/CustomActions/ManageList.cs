@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using BuilderInterpreter.Enums;
 using BuilderInterpreter.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;

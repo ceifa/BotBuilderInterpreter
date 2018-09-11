@@ -3,11 +3,10 @@ using BuilderInterpreter.Interfaces;
 using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
-using Newtonsoft.Json;
 
 namespace BuilderInterpreter.Models.BuilderModels
 {
-    class MergeContact : UserContact, ICustomActionSettingsBase
+    internal class MergeContact : UserContact, ICustomActionSettingsBase
     {
         public Task Execute(UserContext userContext, IServiceProvider serviceProvider)
         {

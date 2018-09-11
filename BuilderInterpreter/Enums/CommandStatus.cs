@@ -1,4 +1,4 @@
-﻿namespace BuilderInterpreter.Enums
+﻿namespace BuilderInterpreter
 {
     public enum CommandStatus
     {

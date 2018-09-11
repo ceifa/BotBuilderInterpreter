@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace BuilderInterpreter
 {
-    public class BotFlowService : IBotFlowService
+    internal class BotFlowService : IBotFlowService
     {
         private const string FlowBucketKey = "blip_portal:builder_working_flow";
         private const string ConfigurationBucketKey = "blip_portal:builder_working_configuration";

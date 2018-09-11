@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BuilderInterpreter
 {
-    class UserContextService : IUserContextService
+    internal class UserContextService : IUserContextService
     {
         private const string CoreKeyword = "BotCore";
         private const string BucketKeyword = nameof(UserContext);

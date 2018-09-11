@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace BuilderInterpreter.Models.BuilderModels
 {
-    class ProcessHttp : ICustomActionSettingsBase
+    internal class ProcessHttp : ICustomActionSettingsBase
     {
         [JsonProperty("method")]
-        public Enums.HttpMethod Method { get; set; }
+        public HttpMethod Method { get; set; }
 
         [JsonProperty("headers")]
         public Dictionary<string, string> Headers { get; set; }

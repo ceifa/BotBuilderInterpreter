@@ -9,7 +9,7 @@ using System.Text.RegularExpressions;
 
 namespace BuilderInterpreter.Services
 {
-    public class VariableService : IVariableService
+    internal class VariableService : IVariableService
     {
         private readonly Regex TextVariablesRegex = new Regex(@"{{([a-zA-Z0-9\.@_\-\[\]]+)}}", RegexOptions.Compiled);
         private readonly DocumentSerializer _serializer;
@@ -36,11 +36,11 @@ namespace BuilderInterpreter.Services
                 if (arrayCheck.Count > 0)
                 {
                     int index = int.Parse(arrayCheck[0].Groups[1].Value);
-                    actual = JArray.FromObject(actual)[index];
+                    actual = JArray.FromObject(actual)?[index];
                 }
                 else
                 {
-                    actual = JObject.FromObject(actual)[variable];
+                    actual = JObject.FromObject(actual)?[variable];
                 }
 
                 if (actual == null) return null;
@@ -61,9 +61,15 @@ namespace BuilderInterpreter.Services
             foreach (Match match in TextVariablesRegex.Matches(source))
             {
                 var variableName = match.Groups[1].Value;
-                if (variableValues.ContainsKey(variableName)) continue;
+
+                if (variableValues.ContainsKey(variableName))
+                    continue;
+
                 var variableValue = GetVariableValue(variableName, variables);
-                if (variableValue == null) continue;
+
+                if (variableValue == null)
+                    continue;
+
                 variableValues.Add(variableName, variableValue.ToString());
             }
 

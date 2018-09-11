@@ -1,5 +1,4 @@
-﻿using BuilderInterpreter.Enums;
-using BuilderInterpreter.Interfaces;
+﻿using BuilderInterpreter.Interfaces;
 using BuilderInterpreter.Models;
 using BuilderInterpreter.Models.BuilderModels;
 using Newtonsoft.Json;
@@ -9,7 +8,7 @@ using System.Collections.Generic;
 
 namespace BuilderInterpreter.Comms
 {
-    class JsonCustomActionArraySerializer : JsonConverter
+    internal class JsonCustomActionArraySerializer : JsonConverter
     {
         public override bool CanConvert(Type objectType)
         {

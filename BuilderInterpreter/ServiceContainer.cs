@@ -12,37 +12,36 @@ using System.Threading.Tasks;
 
 namespace BuilderInterpreter
 {
-    public static class ServiceContainer
+    internal static class ServiceContainer
     {
-        internal static async Task<ServiceCollection> ConfigureServices(ServiceCollection container, Configuration configuration)
+        internal static async Task<IServiceCollection> ConfigureServices(IServiceCollection container, Configuration configuration)
         {
-            container.AddSingleton(BlipProviderFactory());
-            container.AddSingleton(configuration);
-            container.AddSingleton<IBlipService, BlipService>();
-            container.AddSingleton<IBucketBaseService, BucketBaseService>();
-            container.AddSingleton<IBotFlowService, BotFlowService>();
-            container.AddSingleton<IUserContextService, UserContextService>();
-            container.AddSingleton<IStateMachine, StateMachine>();
-            container.AddSingleton<IUserSemaphoreService, UserSemaphoreService>();
-            container.AddSingleton<ITrackEventService, TrackEventService>();
-            container.AddSingleton<IDistributionListService, DistributionListService>();
-            container.AddSingleton<IVariableService, VariableService>();
-            container.AddSingleton<IStateMachineService, StateMachineService>();
-            container.AddSingleton<ICustomActionService, CustomActionService>();
-            container.AddSingleton<BlipChannel>();
-            container.AddSingleton<DocumentSerializer>();
-            container.AddMemoryCache();
-            container.AddSingleton(await BotFlowFactory(container));
-
-            return container;
+            return container.AddSingleton(BlipProviderFactory())
+                .AddSingleton(configuration)
+                .AddSingleton<IBlipService, BlipService>()
+                .AddSingleton<IBucketBaseService, BucketBaseService>()
+                .AddSingleton<IBotFlowService, BotFlowService>()
+                .AddSingleton<IUserContextService, UserContextService>()
+                .AddSingleton<IStateMachine, StateMachine>()
+                .AddSingleton<IUserSemaphoreService, UserSemaphoreService>()
+                .AddSingleton<ITrackEventService, TrackEventService>()
+                .AddSingleton<IDistributionListService, DistributionListService>()
+                .AddSingleton<IVariableService, VariableService>()
+                .AddSingleton<IStateMachineService, StateMachineService>()
+                .AddSingleton<ICustomActionService, CustomActionService>()
+                .AddSingleton<IComparisonService, ComparisonService>()
+                .AddSingleton<BlipChannel>()
+                .AddSingleton<DocumentSerializer>()
+                .AddMemoryCache()
+                .AddSingleton(await BotFlowFactory(container));
         }
 
-        internal static void AddNoActionSingleton<TNoAction>(ServiceCollection container) where TNoAction : class, INoAction
+        internal static void AddNoActionSingleton<TNoAction>(IServiceCollection container) where TNoAction : class, INoAction
         {
             container.AddSingleton<INoAction, TNoAction>();
         }
 
-        private static async Task<BotFlow> BotFlowFactory(ServiceCollection container)
+        private static async Task<BotFlow> BotFlowFactory(IServiceCollection container)
         {
             var provider = container.BuildServiceProvider();
 

@@ -35,10 +35,10 @@ namespace BuilderInterpreter.Models
         public Document Content { get; set; }
 
         [JsonProperty("method", DefaultValueHandling = DefaultValueHandling.Ignore)]
-        public Enums.CommandMethod? Method { get; set; }
+        public CommandMethod? Method { get; set; }
 
         [JsonProperty("status", DefaultValueHandling = DefaultValueHandling.Ignore)]
-        public Enums.CommandStatus? Status { get; set; }
+        public CommandStatus? Status { get; set; }
 
         [JsonProperty("reason", DefaultValueHandling = DefaultValueHandling.Ignore)]
         public Reason Reason { get; set; }

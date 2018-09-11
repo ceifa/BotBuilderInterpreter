@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace BuilderInterpreter.Helper
 {
-    class RetryHandler : DelegatingHandler
+    internal class RetryHandler : DelegatingHandler
     {
         private readonly int MaxRetries = 3;
 

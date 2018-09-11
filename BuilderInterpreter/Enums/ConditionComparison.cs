@@ -1,6 +1,6 @@
-﻿namespace BuilderInterpreter.Enums
+﻿namespace BuilderInterpreter
 {
-    public enum ConditionComparison
+    internal enum ConditionComparison
     {
         Equals,
         NotEquals,
@@ -13,5 +13,7 @@
         LessThanOrEquals,
         Matches,
         ApproximateTo,
+        Exists,
+        NotExists
     }
 }

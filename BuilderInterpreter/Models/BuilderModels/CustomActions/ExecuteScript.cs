@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BuilderInterpreter.Models.BuilderModels
 {
-    class ExecuteScript : ICustomActionSettingsBase
+    internal class ExecuteScript : ICustomActionSettingsBase
     {
         [JsonProperty("function")]
         public string Function { get; set; }

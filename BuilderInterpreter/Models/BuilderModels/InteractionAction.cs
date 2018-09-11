@@ -2,7 +2,7 @@
 
 namespace BuilderInterpreter.Models
 {
-    public class InteractionAction
+    internal class InteractionAction
     {
         [JsonProperty("input")]
         public Input Input { get; set; }
