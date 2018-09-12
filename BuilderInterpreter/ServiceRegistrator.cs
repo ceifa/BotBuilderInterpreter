@@ -12,9 +12,9 @@ using System.Threading.Tasks;
 
 namespace BuilderInterpreter
 {
-    internal static class ServiceContainer
+    public static class ServiceRegistrator
     {
-        internal static async Task<IServiceCollection> ConfigureServices(IServiceCollection container, Configuration configuration)
+        public static IServiceCollection AddBuilderInterpreter(this IServiceCollection container, Configuration configuration)
         {
             return container.AddSingleton(BlipProviderFactory())
                 .AddSingleton(configuration)
@@ -33,12 +33,12 @@ namespace BuilderInterpreter
                 .AddSingleton<BlipChannel>()
                 .AddSingleton<DocumentSerializer>()
                 .AddMemoryCache()
-                .AddSingleton(await BotFlowFactory(container));
+                .AddSingleton(BotFlowFactory(container).GetAwaiter().GetResult());
         }
 
-        internal static void AddNoActionSingleton<TNoAction>(IServiceCollection container) where TNoAction : class, INoAction
+        public static IServiceCollection AddNoActionHandler<TNoAction>(this IServiceCollection container) where TNoAction : class, INoAction
         {
-            container.AddSingleton<INoAction, TNoAction>();
+            return container.AddSingleton<INoAction, TNoAction>();
         }
 
         private static async Task<BotFlow> BotFlowFactory(IServiceCollection container)
@@ -46,7 +46,7 @@ namespace BuilderInterpreter
             var provider = container.BuildServiceProvider();
 
             var botFlowService = provider.GetService<IBotFlowService>();
-            var botFlow = await botFlowService.GetBotFlow();
+            var botFlow = await botFlowService.GetBotFlow().ConfigureAwait(false);
 
             return botFlow ?? throw new NullReferenceException(nameof(botFlow));
         }

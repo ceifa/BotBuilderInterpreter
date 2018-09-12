@@ -1,6 +1,8 @@
 ﻿using BotBuilderInterpreter.Console;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
+using BuilderInterpreter.Models;
+using Take.Blip.Client;
 
 namespace BuilderInterpreter.ConsoleApp
 {
@@ -8,8 +10,16 @@ namespace BuilderInterpreter.ConsoleApp
     {
         static async Task Main(string[] args)
         {
-            var services = await ServiceRegistrator.RegisterServices();
-            await services.GetService<Startup>().Start();
+            var client = new BlipClientBuilder().UsingAccessKey("teste144", "dkNDb1hSeTNaYUtDVEkxMnNzNWE=").Build();
+
+            var services = new ServiceCollection()
+                .AddBuilderInterpreter(new Configuration { AuthorizationKey = "Key dGVzdGUxNDQ6dkNDb1hSeTNaYUtDVEkxMnNzNWE=" })
+                    .AddNoActionHandler<NoAction>()
+                    .AddSingleton(client)
+                    .AddSingleton<MessageReceiver>()
+                    .AddSingleton<Startup>();
+
+            await services.BuildServiceProvider().GetService<Startup>().Start();
         }
     }
 }
