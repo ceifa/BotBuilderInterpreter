@@ -9,9 +9,9 @@ namespace BuilderInterpreter
 {
     internal class DistributionListService : IDistributionListService
     {
-        private const string To = "postmaster@broadcast.msging.net";
-        private const string Type = "application/vnd.iris.distribution-list+json";
-        private const string UriPrefix = "/lists";
+        private const string POSTMASTER_ADDRESS = "postmaster@broadcast.msging.net";
+        private const string DISTRIBUTION_LIST_TYPE = "application/vnd.iris.distribution-list+json";
+        private const string COMMAND_KEYWORD = "lists";
 
         private readonly IBlipService _blipService;
 
@@ -35,10 +35,10 @@ namespace BuilderInterpreter
         {
             var response = await _blipService.SendCommandAsync(new BlipCommand
             {
-                To = To,
+                To = POSTMASTER_ADDRESS,
                 Method = CommandMethod.SET,
                 Type = "application/vnd.lime.identity",
-                Uri = $"{UriPrefix}/{listIdentity}/recipients",
+                Uri = $"/{COMMAND_KEYWORD}/{listIdentity}/recipients",
                 Resource = userIdentity
             });
 
@@ -49,9 +49,9 @@ namespace BuilderInterpreter
         {
             var response = await _blipService.SendCommandAsync(new BlipCommand
             {
-                To = To,
+                To = POSTMASTER_ADDRESS,
                 Method = CommandMethod.DELETE,
-                Uri = $"{UriPrefix}/{listIdentity}/recipients/{userIdentity}",
+                Uri = $"/{COMMAND_KEYWORD}/{listIdentity}/recipients/{userIdentity}",
             });
 
             return response.Status == CommandStatus.SUCCESS;
@@ -75,10 +75,10 @@ namespace BuilderInterpreter
         {
             var response = await _blipService.SendCommandAsync(new BlipCommand
             {
-                To = To,
+                To = POSTMASTER_ADDRESS,
                 Method = CommandMethod.SET,
-                Type = Type,
-                Uri = UriPrefix,
+                Type = DISTRIBUTION_LIST_TYPE,
+                Uri = $"/{COMMAND_KEYWORD}",
                 Resource = new { identity = listIdentity }
             });
 
@@ -89,9 +89,9 @@ namespace BuilderInterpreter
         {
             var response = await _blipService.SendCommandAsync(new BlipCommand
             {
-                To = "postmaster@broadcast.msging.net",
+                To = POSTMASTER_ADDRESS,
                 Method = CommandMethod.GET,
-                Uri = UriPrefix
+                Uri = $"/{COMMAND_KEYWORD}"
             });
 
             if (response.Status != CommandStatus.SUCCESS)

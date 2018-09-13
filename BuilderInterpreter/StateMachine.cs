@@ -46,7 +46,7 @@ namespace BuilderInterpreter
 
                 var state = _stateMachineService.GetCurrentUserState(userContext);
 
-                var oldInput = state.InteractionActions.Single(x => x.Input != null).Input;
+                var oldInput = state.InteractionActions.Single(x => x.Input != default).Input;
                 if (!string.IsNullOrEmpty(oldInput.Variable))
                     _variableService.AddOrUpdate(oldInput.Variable, input, userContext.Variables);
 
@@ -60,7 +60,7 @@ namespace BuilderInterpreter
 
                     await _customActionService.ExecuteCustomActions(state.EnteringCustomActions, userContext);
 
-                    state.InteractionActions.Where(x => x.Input == default).ForEach(async x =>
+                    state.InteractionActions.Where(x => x.Input == default).ForEach(x =>
                     {
                         var content = x.Action.Message.Content;
 

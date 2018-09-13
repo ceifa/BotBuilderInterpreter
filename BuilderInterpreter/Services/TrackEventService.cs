@@ -8,6 +8,9 @@ namespace BuilderInterpreter
 {
     internal class TrackEventService : ITrackEventService
     {
+        private const string POSTMASTER_ADDRESS = "postmaster@analytics.msging.net";
+        private const string COMMAND_KEYWORD = "event-track";
+
         private readonly IBlipService _blipService;
 
         public TrackEventService(IBlipService blipService)
@@ -19,10 +22,10 @@ namespace BuilderInterpreter
         {
             var response = await _blipService.SendCommandAsync(new BlipCommand
             {
-                To = "postmaster@analytics.msging.net",
+                To = POSTMASTER_ADDRESS,
                 Method = CommandMethod.SET,
                 Type = "application/vnd.iris.eventTrack+json",
-                Uri = "/event-track",
+                Uri = $"/{COMMAND_KEYWORD}",
                 Resource = trackEvent
             });
 
@@ -33,9 +36,9 @@ namespace BuilderInterpreter
         {
             var response = await _blipService.SendCommandAsync(new BlipCommand
             {
-                To = "postmaster@analytics.msging.net",
+                To = POSTMASTER_ADDRESS,
                 Method = CommandMethod.GET,
-                Uri = "/event-track"
+                Uri = $"/{COMMAND_KEYWORD}"
             });
 
             if (response.Status != CommandStatus.SUCCESS)

@@ -17,9 +17,9 @@ namespace BuilderInterpreter
 
         public Task<SemaphoreSlim> GetSemaphoreByUserIdentity(string identity)
         {
-            return _memoryCache.GetOrCreateAsync(identity, factory => 
+            return _memoryCache.GetOrCreateAsync(identity, factory =>
             {
-                factory.SlidingExpiration = TimeSpan.FromMinutes(30);
+                factory.SlidingExpiration = TimeSpan.FromMinutes(1);
                 return Task.FromResult(new SemaphoreSlim(1, 1));
             });
         }

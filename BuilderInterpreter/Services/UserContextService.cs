@@ -28,11 +28,12 @@ namespace BuilderInterpreter
 
             return _memoryCache.GetOrCreateAsync(userIdentity, async factory =>
             {
-                factory.SlidingExpiration = TimeSpan.FromMinutes(10);
+                factory.SlidingExpiration = TimeSpan.FromMinutes(1);
 
                 var userContext = await _bucketService.GetBucketObjectAsync<UserContext>(bucketIdentifier);
 
                 if (userContext == default)
+                {
                     userContext = new UserContext
                     {
                         Identity = userIdentity,
@@ -40,6 +41,7 @@ namespace BuilderInterpreter
                         Contact = new UserContact(),
                         FirstInteraction = true
                     };
+                }
 
                 return userContext;
             });
@@ -51,7 +53,7 @@ namespace BuilderInterpreter
             var bucketIdentifier = GetBucketIdentifier(userIdentity);
 
             var bucketSaveSuccess = await _bucketService.SetBucketObjectAsync(bucketIdentifier, userContext, TimeSpan.FromDays(2));
-            var memoryCacheSaveSuccess = _memoryCache.Set(userIdentity, userContext) != null;
+            var memoryCacheSaveSuccess = _memoryCache.Set(userIdentity, userContext) != default;
 
             return bucketSaveSuccess && memoryCacheSaveSuccess;
         }
