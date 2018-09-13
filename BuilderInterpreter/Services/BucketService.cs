@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BuilderInterpreter
 {
-    internal class BucketService : IBucketService
+    public class BucketService : IBucketService
     {
         private const string CommandKeyword = "buckets";
 

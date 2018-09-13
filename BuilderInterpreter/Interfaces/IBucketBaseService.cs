@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace BuilderInterpreter.Interfaces
 {
-    internal interface IBucketBaseService
+    public interface IBucketBaseService
     {
         Task<T> GetBucketObjectAsync<T>(string key);
 

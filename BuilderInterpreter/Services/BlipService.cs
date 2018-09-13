@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace BuilderInterpreter
 {
-    internal class BlipService : IBlipService
+    public class BlipService : IBlipService
     {
         private readonly IBlipProvider _blipProvider;
         private readonly Configuration _configuration;

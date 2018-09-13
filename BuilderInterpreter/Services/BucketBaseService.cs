@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace BuilderInterpreter
 {
-    internal class BucketBaseService : BucketService, IBucketBaseService
+    public class BucketBaseService : BucketService, IBucketBaseService
     {
         public BucketBaseService(IBlipService blipService) : base(blipService)
         {
@@ -22,5 +22,7 @@ namespace BuilderInterpreter
         }
 
         public Task<bool> SetBucketObjectAsync<T>(string key, T document, TimeSpan expiration = default) => SetBucketAsync(key, document, expiration);
+
+        public Task<bool> DeleteBucketObjectAsync(string key) => DeleteBucketAsync(key);
     }
 }
