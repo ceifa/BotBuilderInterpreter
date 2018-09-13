@@ -1,4 +1,5 @@
-﻿using BuilderInterpreter.Interfaces;
+﻿using BuilderInterpreter.Helper;
+using BuilderInterpreter.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Threading.Tasks;
@@ -12,9 +13,12 @@ namespace BuilderInterpreter.Models.BuilderModels
             var trackEventService = serviceProvider.GetService<ITrackEventService>();
             var variableService = serviceProvider.GetService<IVariableService>();
 
-            var newTrackEvent = variableService.ReplaceVariablesInObject<TrackEvent>(this, userContext.Variables);
+            FireAndForget.Run(async () =>
+            {
+                var newTrackEvent = variableService.ReplaceVariablesInObject<TrackEvent>(this, userContext.Variables);
 
-            await trackEventService.RegisterEventTrack(newTrackEvent);
+                await trackEventService.RegisterEventTrack(newTrackEvent);
+            });
         }
     }
 }
