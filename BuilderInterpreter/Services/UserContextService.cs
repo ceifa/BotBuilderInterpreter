@@ -9,8 +9,7 @@ namespace BuilderInterpreter
 {
     internal class UserContextService : IUserContextService
     {
-        private const string CoreKeyword = "BotCore";
-        private const string BucketKeyword = nameof(UserContext);
+        private const string BUCKET_KEYWORD = nameof(UserContext);
 
         private readonly IBucketBaseService _bucketService;
         private readonly IMemoryCache _memoryCache;
@@ -23,7 +22,6 @@ namespace BuilderInterpreter
 
         public Task<UserContext> GetUserContext(string userIdentity)
         {
-            userIdentity = Uri.EscapeDataString(userIdentity);
             var bucketIdentifier = GetBucketIdentifier(userIdentity);
 
             return _memoryCache.GetOrCreateAsync(userIdentity, async factory =>
@@ -38,8 +36,7 @@ namespace BuilderInterpreter
                     {
                         Identity = userIdentity,
                         Variables = new Dictionary<string, object>(),
-                        Contact = new UserContact(),
-                        FirstInteraction = true
+                        Contact = new UserContact()
                     };
                 }
 
@@ -49,7 +46,6 @@ namespace BuilderInterpreter
 
         public async Task<bool> SetUserContext(string userIdentity, UserContext userContext)
         {
-            userIdentity = Uri.EscapeDataString(userIdentity);
             var bucketIdentifier = GetBucketIdentifier(userIdentity);
 
             var bucketSaveSuccess = await _bucketService.SetBucketObjectAsync(bucketIdentifier, userContext, TimeSpan.FromDays(2));
@@ -58,6 +54,6 @@ namespace BuilderInterpreter
             return bucketSaveSuccess && memoryCacheSaveSuccess;
         }
 
-        private string GetBucketIdentifier(string userIdentity) => $"{BucketKeyword}_{userIdentity}_{CoreKeyword}";
+        private string GetBucketIdentifier(string userIdentity) => $"{BUCKET_KEYWORD}_{userIdentity}";
     }
 }

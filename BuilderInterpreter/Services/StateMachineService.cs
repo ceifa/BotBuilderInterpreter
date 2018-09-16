@@ -22,7 +22,7 @@ namespace BuilderInterpreter
         {
             var stateId = userContext.StateId;
 
-            var state = string.IsNullOrEmpty(stateId) ? default : _botFlow.States.SingleOrDefault(x => x.Key == stateId).Value;
+            var state = string.IsNullOrEmpty(stateId) ? default : _botFlow.States[stateId];
 
             if (state == default)
             {
@@ -76,7 +76,7 @@ namespace BuilderInterpreter
                 }
             }
 
-            return _botFlow.States.Single(x => x.Key == nextStateId).Value;
+            return _botFlow.States[nextStateId] ?? _botFlow.States.Single(x => x.Value.IsRoot).Value;
         }
     }
 }

@@ -72,7 +72,6 @@ namespace BuilderInterpreter
                     await _customActionService.ExecuteCustomActions(state.LeavingCustomActions, userContext);
                 } while (!state.InteractionActions.Any(x => x.Input?.Bypass == false));
 
-                userContext.FirstInteraction = false;
                 userContext.StateId = state.Id;
                 await _userContext.SetUserContext(userIdentity, userContext);
 
