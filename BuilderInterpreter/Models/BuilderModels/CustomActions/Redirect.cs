@@ -4,7 +4,7 @@ using BuilderInterpreter.Interfaces;
 
 namespace BuilderInterpreter.Models
 {
-    public class Redirect : ICustomActionPayload
+    public class Redirect
     {
         [JsonProperty("address")]
         public string Address { get; set; }

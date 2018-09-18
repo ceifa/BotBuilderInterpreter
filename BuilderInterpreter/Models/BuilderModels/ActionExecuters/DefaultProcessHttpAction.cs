@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using BuilderInterpreter.Helper;
 using BuilderInterpreter.Interfaces;
+using Newtonsoft.Json.Linq;
 
 namespace BuilderInterpreter.Models.BuilderModels.ActionExecuters
 {
@@ -15,9 +16,9 @@ namespace BuilderInterpreter.Models.BuilderModels.ActionExecuters
 
         public CustomActionType ActionType => CustomActionType.ProcessHttp;
 
-        public async Task ExecuteActionAsync(UserContext userContext, ICustomActionPayload payload)
+        public async Task ExecuteActionAsync(UserContext userContext, JObject payload)
         {
-            var settings = payload as ProcessHttp;
+            var settings = payload.ToObject<ProcessHttp>();
 
             settings = _variableService.ReplaceVariablesInObject(settings, userContext.Variables);
             var responseMessage = await settings.ExecuteHttpRequest();

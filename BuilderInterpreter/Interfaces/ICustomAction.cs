@@ -1,4 +1,5 @@
 ﻿using BuilderInterpreter.Models;
+using Newtonsoft.Json.Linq;
 using System.Threading.Tasks;
 
 namespace BuilderInterpreter.Interfaces
@@ -7,6 +8,6 @@ namespace BuilderInterpreter.Interfaces
     {
         CustomActionType ActionType { get; }
 
-        Task ExecuteActionAsync(UserContext userContext, ICustomActionPayload payload);
+        Task ExecuteActionAsync(UserContext userContext, JObject payload);
     }
 }

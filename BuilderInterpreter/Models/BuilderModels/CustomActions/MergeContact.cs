@@ -1,8 +1,6 @@
-﻿using BuilderInterpreter.Interfaces;
-
-namespace BuilderInterpreter.Models.BuilderModels
+﻿namespace BuilderInterpreter.Models.BuilderModels
 {
-    internal class MergeContact : UserContact, ICustomActionPayload
+    internal class MergeContact : UserContact
     {
     }
 }

@@ -1,5 +1,6 @@
 ﻿using BuilderInterpreter.Attributes;
 using BuilderInterpreter.Interfaces;
+using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -18,9 +19,9 @@ namespace BuilderInterpreter.Models.BuilderModels.ActionExecuters
 
         public CustomActionType ActionType => CustomActionType.Redirect;
 
-        public async Task ExecuteActionAsync(UserContext userContext, ICustomActionPayload payload)
+        public async Task ExecuteActionAsync(UserContext userContext, JObject payload)
         {
-            var settings = payload as Redirect;
+            var settings = payload.ToObject<Redirect>();
 
             settings = _variableService.ReplaceVariablesInObject(settings, userContext.Variables);
 

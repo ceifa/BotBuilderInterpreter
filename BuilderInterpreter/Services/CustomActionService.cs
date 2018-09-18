@@ -27,7 +27,10 @@ namespace BuilderInterpreter.Services
                     possibleActions = possibleActions.Where(p => !(p is IDefaultCustomAction));
                 }
 
-                possibleActions.ForEach(p => p.ExecuteActionAsync(userContext, customAction.Settings));
+                foreach (var action in possibleActions)
+                {
+                    await action.ExecuteActionAsync(userContext, customAction.Settings);
+                }
             }
         }
     }

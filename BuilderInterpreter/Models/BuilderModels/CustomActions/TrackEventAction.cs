@@ -2,7 +2,7 @@
 
 namespace BuilderInterpreter.Models.BuilderModels.CustomActions
 {
-    class TrackEventAction : TrackEvent, ICustomActionPayload
+    class TrackEventAction : TrackEvent
     {
     }
 }

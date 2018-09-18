@@ -1,4 +1,5 @@
 ﻿using BuilderInterpreter.Interfaces;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Threading.Tasks;
 
@@ -17,9 +18,9 @@ namespace BuilderInterpreter.Models.BuilderModels.ActionExecuters
 
         public CustomActionType ActionType => CustomActionType.ManageList;
 
-        public async Task ExecuteActionAsync(UserContext userContext, ICustomActionPayload payload)
+        public async Task ExecuteActionAsync(UserContext userContext, JObject payload)
         {
-            var settings = payload as ManageList;
+            var settings = payload.ToObject<ManageList>();
 
             var listNameReplaced = _variableService.ReplaceVariablesInString(settings.ListName, userContext.Variables);
 

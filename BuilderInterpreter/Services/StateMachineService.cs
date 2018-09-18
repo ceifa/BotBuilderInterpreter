@@ -7,32 +7,32 @@ namespace BuilderInterpreter
 {
     internal class StateMachineService : IStateMachineService
     {
-        private readonly BotFlow _botFlow;
         private readonly IVariableService _variableService;
         private readonly IComparisonService _comparisonService;
+        private readonly IBotFlowService _botFlowService;
 
-        public StateMachineService(BotFlow botFlow, IVariableService variableService, IComparisonService comparisonService)
+        public StateMachineService(IBotFlowService botFlowService, IVariableService variableService, IComparisonService comparisonService)
         {
-            _botFlow = botFlow;
             _variableService = variableService;
             _comparisonService = comparisonService;
+            _botFlowService = botFlowService;
         }
 
-        public State GetCurrentUserState(UserContext userContext)
+        public State GetCurrentUserState(UserContext userContext, BotFlow botFlow)
         {
             var stateId = userContext.StateId;
 
-            var state = string.IsNullOrEmpty(stateId) ? default : _botFlow.States[stateId];
+            var state = string.IsNullOrEmpty(stateId) ? default : botFlow.States[stateId];
 
             if (state == default)
             {
-                state = _botFlow.States.Values.Single(x => x.IsRoot);
+                state = botFlow.States.Values.Single(x => x.IsRoot);
             }
 
             return state;
         }
 
-        public State GetNextUserState(UserContext userContext, State lastState)
+        public State GetNextUserState(UserContext userContext, State lastState, BotFlow botFlow)
         {
             var nextStateId = lastState.DefaultOutput.StateId;
 
@@ -76,7 +76,7 @@ namespace BuilderInterpreter
                 }
             }
 
-            return _botFlow.States[nextStateId] ?? _botFlow.States.Single(x => x.Value.IsRoot).Value;
+            return botFlow.States[nextStateId] ?? botFlow.States.Single(x => x.Value.IsRoot).Value;
         }
     }
 }

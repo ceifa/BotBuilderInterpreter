@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace BuilderInterpreter.Models.BuilderModels
 {
-    public class ExecuteScript : ICustomActionPayload
+    public class ExecuteScript
     {
         [JsonProperty("function")]
         public string Function { get; set; }

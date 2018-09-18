@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace BuilderInterpreter.Models.BuilderModels
 {
-    internal class ProcessHttp : ICustomActionPayload
+    internal class ProcessHttp
     {
         [JsonProperty("method")]
         public HttpMethod Method { get; set; }

@@ -1,5 +1,6 @@
 ﻿using BuilderInterpreter.Interfaces;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace BuilderInterpreter.Models
 {
@@ -12,6 +13,6 @@ namespace BuilderInterpreter.Models
         public string Title { get; set; }
 
         [JsonProperty("settings")]
-        public ICustomActionPayload Settings { get; set; }
+        public JObject Settings { get; set; }
     }
 }

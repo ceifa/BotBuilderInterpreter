@@ -1,6 +1,7 @@
 ﻿using BuilderInterpreter.Helper;
 using BuilderInterpreter.Interfaces;
 using BuilderInterpreter.Models.BuilderModels.CustomActions;
+using Newtonsoft.Json.Linq;
 using System.Threading.Tasks;
 
 namespace BuilderInterpreter.Models.BuilderModels.ActionExecuters
@@ -18,9 +19,9 @@ namespace BuilderInterpreter.Models.BuilderModels.ActionExecuters
 
         public CustomActionType ActionType => CustomActionType.TrackEvent;
 
-        public async Task ExecuteActionAsync(UserContext userContext, ICustomActionPayload payload)
+        public async Task ExecuteActionAsync(UserContext userContext, JObject payload)
         {
-            var settings = payload as TrackEventAction;
+            var settings = payload.ToObject<TrackEventAction>();
 
             FireAndForget.Run(async () =>
             {

@@ -46,7 +46,7 @@ namespace BuilderInterpreter
                 _variableService.AddOrUpdate("config", flow.GlobalVariables, userContext.Variables);
                 _variableService.AddOrUpdate("contact", userContext.Contact, userContext.Variables);
 
-                var state = _stateMachineService.GetCurrentUserState(userContext);
+                var state = _stateMachineService.GetCurrentUserState(userContext, flow);
 
                 var oldInput = state.InteractionActions.Single(x => x.Input != default).Input;
                 if (!string.IsNullOrEmpty(oldInput.Variable))
@@ -58,7 +58,7 @@ namespace BuilderInterpreter
 
                 do
                 {
-                    state = _stateMachineService.GetNextUserState(userContext, state);
+                    state = _stateMachineService.GetNextUserState(userContext, state, flow);
 
                     await _customActionService.ExecuteCustomActions(state.EnteringCustomActions, userContext);
 

@@ -1,5 +1,6 @@
 ﻿using BuilderInterpreter.Interfaces;
 using Jint;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Threading.Tasks;
 
@@ -16,9 +17,9 @@ namespace BuilderInterpreter.Models.BuilderModels.ActionExecuters
 
         public CustomActionType ActionType => CustomActionType.ExecuteScript;
 
-        public async Task ExecuteActionAsync(UserContext userContext, ICustomActionPayload payload)
+        public async Task ExecuteActionAsync(UserContext userContext, JObject payload)
         {
-            var settings = payload as ExecuteScript;
+            var settings = payload.ToObject<ExecuteScript>();
 
             const string defaultFunctionName = "run";
             object[] arguments = null;

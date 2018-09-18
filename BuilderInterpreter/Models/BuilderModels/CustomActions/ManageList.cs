@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace BuilderInterpreter.Models.BuilderModels
 {
-    internal class ManageList : ICustomActionPayload
+    internal class ManageList
     {
         [JsonProperty("listName")]
         public string ListName { get; set; }
