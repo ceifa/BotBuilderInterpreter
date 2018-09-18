@@ -2,7 +2,7 @@
 
 namespace BuilderInterpreter.Models.BuilderModels
 {
-    internal class RedirectContext
+    public class RedirectContext
     {
         [JsonProperty("type")]
         public string Type { get; set; }

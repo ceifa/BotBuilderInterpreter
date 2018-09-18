@@ -1,6 +1,6 @@
 ﻿namespace BuilderInterpreter
 {
-    internal enum CustomActionType
+    public enum CustomActionType
     {
         ProcessHttp,
         TrackEvent,

@@ -15,11 +15,9 @@ namespace BuilderInterpreter.Models
         public InteractionAction[] InteractionActions { get; set; }
 
         [JsonProperty("$enteringCustomActions")]
-        [JsonConverter(typeof(JsonCustomActionArraySerializer))]
         public CustomAction[] EnteringCustomActions { get; set; }
 
         [JsonProperty("$leavingCustomActions")]
-        [JsonConverter(typeof(JsonCustomActionArraySerializer))]
         public CustomAction[] LeavingCustomActions { get; set; }
 
         [JsonProperty("$conditionOutputs")]

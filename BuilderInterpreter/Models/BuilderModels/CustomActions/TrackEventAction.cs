@@ -1,24 +1,8 @@
-﻿using BuilderInterpreter.Helper;
-using BuilderInterpreter.Interfaces;
-using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Threading.Tasks;
+﻿using BuilderInterpreter.Interfaces;
 
-namespace BuilderInterpreter.Models.BuilderModels
+namespace BuilderInterpreter.Models.BuilderModels.CustomActions
 {
-    internal class TrackEventAction : TrackEvent, ICustomActionSettingsBase
+    class TrackEventAction : TrackEvent, ICustomActionPayload
     {
-        public async Task Execute(UserContext userContext, IServiceProvider serviceProvider)
-        {
-            var trackEventService = serviceProvider.GetService<ITrackEventService>();
-            var variableService = serviceProvider.GetService<IVariableService>();
-
-            FireAndForget.Run(async () =>
-            {
-                var newTrackEvent = variableService.ReplaceVariablesInObject<TrackEvent>(this, userContext.Variables);
-
-                await trackEventService.RegisterEventTrack(newTrackEvent);
-            });
-        }
     }
 }

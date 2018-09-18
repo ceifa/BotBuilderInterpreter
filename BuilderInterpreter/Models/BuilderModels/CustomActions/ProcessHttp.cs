@@ -1,14 +1,10 @@
-﻿using BuilderInterpreter.Helper;
-using BuilderInterpreter.Interfaces;
-using Microsoft.Extensions.DependencyInjection;
+﻿using BuilderInterpreter.Interfaces;
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace BuilderInterpreter.Models.BuilderModels
 {
-    internal class ProcessHttp : ICustomActionSettingsBase
+    internal class ProcessHttp : ICustomActionPayload
     {
         [JsonProperty("method")]
         public HttpMethod Method { get; set; }
@@ -27,19 +23,5 @@ namespace BuilderInterpreter.Models.BuilderModels
 
         [JsonProperty("responseBodyVariable")]
         public string ResponseBodyVariable { get; set; }
-
-        public async Task Execute(UserContext userContext, IServiceProvider serviceProvider)
-        {
-            var variableService = serviceProvider.GetService<IVariableService>();
-
-            var newProccessHttp = variableService.ReplaceVariablesInObject(this, userContext.Variables);
-            var responseMessage = await newProccessHttp.ExecuteHttpRequest();
-
-            var responseBody = await responseMessage.Content.ReadAsStringAsync();
-            var responseStatusCode = responseMessage.StatusCode;
-
-            variableService.AddOrUpdate(ResponseStatusVariable, (int)responseStatusCode, userContext.Variables);
-            variableService.AddOrUpdate(ResponseBodyVariable, responseBody, userContext.Variables);
-        }
     }
 }

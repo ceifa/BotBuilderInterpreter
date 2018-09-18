@@ -12,6 +12,6 @@ namespace BuilderInterpreter.Models
         public string Title { get; set; }
 
         [JsonProperty("settings")]
-        public ICustomActionSettingsBase Settings { get; set; }
+        public ICustomActionPayload Settings { get; set; }
     }
 }

@@ -9,22 +9,22 @@ namespace BuilderInterpreter
 {
     internal class StateMachine : IStateMachine
     {
-        private readonly BotFlow _botFlow;
+        private readonly IBotFlowService _botFlowService;
         private readonly IUserContextService _userContext;
         private readonly IUserSemaphoreService _userSemaphoreService;
         private readonly IVariableService _variableService;
         private readonly IStateMachineService _stateMachineService;
         private readonly ICustomActionService _customActionService;
 
-        public StateMachine(BotFlow botFlow,
+        public StateMachine(IBotFlowService botFlowService,
             IUserContextService userContext,
             IUserSemaphoreService userSemaphoreService,
             IVariableService variableService,
             ICustomActionService customActionService,
             IStateMachineService stateMachineService)
         {
+            _botFlowService = botFlowService;
             _userContext = userContext;
-            _botFlow = botFlow;
             _userSemaphoreService = userSemaphoreService;
             _variableService = variableService;
             _stateMachineService = stateMachineService;
@@ -39,9 +39,11 @@ namespace BuilderInterpreter
             {
                 await userSemaphore.WaitAsync();
 
+                var flow = await _botFlowService.GetBotFlow();
+
                 userContext = userContext ?? await _userContext.GetUserContext(userIdentity);
 
-                _variableService.AddOrUpdate("config", _botFlow.GlobalVariables, userContext.Variables);
+                _variableService.AddOrUpdate("config", flow.GlobalVariables, userContext.Variables);
                 _variableService.AddOrUpdate("contact", userContext.Contact, userContext.Variables);
 
                 var state = _stateMachineService.GetCurrentUserState(userContext);

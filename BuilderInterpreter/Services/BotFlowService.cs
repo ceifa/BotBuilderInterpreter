@@ -7,8 +7,10 @@ namespace BuilderInterpreter
 {
     internal class BotFlowService : IBotFlowService
     {
-        private const string FlowBucketKey = "blip_portal:builder_working_flow";
-        private const string ConfigurationBucketKey = "blip_portal:builder_working_configuration";
+        private static BotFlow _cachedBotFlow;
+
+        private const string FLOW_BUCKET_KEY = "blip_portal:builder_working_flow";
+        private const string CONFIG_BUCKET_KEY = "blip_portal:builder_working_configuration";
 
         private readonly IBucketBaseService _bucketService;
 
@@ -19,9 +21,15 @@ namespace BuilderInterpreter
 
         public async Task<BotFlow> GetBotFlow()
         {
-            var flow = await _bucketService.GetBucketObjectAsync<Dictionary<string, State>>(FlowBucketKey);
-            var configuration = await _bucketService.GetBucketObjectAsync<Dictionary<string, object>>(ConfigurationBucketKey);
-            return new BotFlow(flow, configuration);
+            if (_cachedBotFlow == default)
+            {
+                var flow = await _bucketService.GetBucketObjectAsync<Dictionary<string, State>>(FLOW_BUCKET_KEY);
+                var configuration = await _bucketService.GetBucketObjectAsync<Dictionary<string, object>>(CONFIG_BUCKET_KEY);
+
+                _cachedBotFlow = new BotFlow(flow, configuration);
+            }
+
+            return _cachedBotFlow;
         }
     }
 }
