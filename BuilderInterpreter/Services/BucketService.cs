@@ -19,7 +19,7 @@ namespace BuilderInterpreter
 
         public async Task<bool> DeleteBucketAsync(string key)
         {
-            var uri = $"/{COMMAND_KEYWORD}/{key}";
+            var uri = $"/{COMMAND_KEYWORD}/{Uri.EscapeDataString(key)}";
             
             var command = new BlipCommand
             {
@@ -34,7 +34,7 @@ namespace BuilderInterpreter
 
         public async Task<string> GetBucketAsync(string key)
         {
-            var uri = $"/{COMMAND_KEYWORD}/{key}";
+            var uri = $"/{COMMAND_KEYWORD}/{Uri.EscapeDataString(key)}";
 
             var command = new BlipCommand
             {
@@ -52,7 +52,7 @@ namespace BuilderInterpreter
 
         public async Task<bool> SetBucketAsync(string key, object document, TimeSpan expiration = default)
         {
-            var uri = $"/{COMMAND_KEYWORD}/{key}";
+            var uri = $"/{COMMAND_KEYWORD}/{Uri.EscapeDataString(key)}";
 
             if (expiration != default)
                 uri += $"?expiration={expiration.TotalMilliseconds}";

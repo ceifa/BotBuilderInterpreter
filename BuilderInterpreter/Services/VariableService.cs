@@ -22,16 +22,14 @@ namespace BuilderInterpreter.Services
         public object GetVariableValue(string name, Dictionary<string, object> variables)
         {
             var variableSplitted = Regex.Split(name, @"\.|(?=\[\d\])", RegexOptions.Compiled);
-            if (variableSplitted.Length == 0 || !variables.ContainsKey(variableSplitted[0])) return null;
+            if (variableSplitted.Length == 0 || !variables.ContainsKey(variableSplitted[0]))
+                return null;
 
             var actual = variables[variableSplitted[0]];
-            if (variableSplitted.Length == 1) return actual;
 
-            variableSplitted = variableSplitted.Skip(1).ToArray();
-
-            foreach (var variable in variableSplitted)
+            for (int i = 1; i < variableSplitted.Length; i++)
             {
-                var arrayCheck = Regex.Matches(variable, @"\[(\d)\]", RegexOptions.Compiled);
+                var arrayCheck = Regex.Matches(variableSplitted[i], @"\[(\d)\]", RegexOptions.Compiled);
 
                 if (arrayCheck.Count > 0)
                 {
@@ -40,10 +38,11 @@ namespace BuilderInterpreter.Services
                 }
                 else
                 {
-                    actual = JObject.FromObject(actual)?[variable];
+                    actual = JObject.FromObject(actual)?[variableSplitted[i]];
                 }
 
-                if (actual == null) return null;
+                if (actual == null)
+                    return null;
             }
 
             return actual;

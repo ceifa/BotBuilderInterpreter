@@ -2,6 +2,7 @@
 using BuilderInterpreter.Models;
 using Lime.Protocol;
 using Newtonsoft.Json.Linq;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -38,7 +39,7 @@ namespace BuilderInterpreter
                 To = POSTMASTER_ADDRESS,
                 Method = CommandMethod.SET,
                 Type = "application/vnd.lime.identity",
-                Uri = $"/{COMMAND_KEYWORD}/{listIdentity}/recipients",
+                Uri = $"/{COMMAND_KEYWORD}/{Uri.EscapeDataString(listIdentity)}/recipients",
                 Resource = userIdentity
             });
 
@@ -51,7 +52,7 @@ namespace BuilderInterpreter
             {
                 To = POSTMASTER_ADDRESS,
                 Method = CommandMethod.DELETE,
-                Uri = $"/{COMMAND_KEYWORD}/{listIdentity}/recipients/{userIdentity}",
+                Uri = $"/{COMMAND_KEYWORD}/{Uri.EscapeDataString(listIdentity)}/recipients/{Uri.EscapeDataString(userIdentity)}",
             });
 
             return response.Status == CommandStatus.SUCCESS;
