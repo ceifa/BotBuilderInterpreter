@@ -11,7 +11,7 @@ namespace BuilderInterpreter.Services
 {
     internal class VariableService : IVariableService
     {
-        private readonly Regex TextVariablesRegex = new Regex(@"{{([a-zA-Z0-9\.@_\-\[\]]+)}}", RegexOptions.Compiled);
+        private readonly Regex TextVariablesRegex = new Regex(@"{{([a-zA-Z_$][a-zA-Z0-9_$[\.\]]*)}}", RegexOptions.Compiled);
         private readonly DocumentSerializer _serializer;
 
         public VariableService(DocumentSerializer serializer)
