@@ -6,6 +6,7 @@ using BuilderInterpreter.Models.BuilderModels;
 using BuilderInterpreter.Models.BuilderModels.ActionExecuters;
 using BuilderInterpreter.Models.BuilderModels.CustomActions;
 using BuilderInterpreter.Services;
+using BuilderInterpreter.Services.VariableProviders;
 using Lime.Protocol.Serialization;
 using Microsoft.Extensions.DependencyInjection;
 using RestEase;
@@ -23,6 +24,7 @@ namespace BuilderInterpreter
                 .AddSingleton<IBlipService, BlipService>()
                 .AddSingleton<IBucketBaseService, BucketBaseService>()
                 .AddSingleton<IBotFlowService, BotFlowService>()
+                .AddSingleton<IBotConfigurationService, BotConfigurationService>()
                 .AddSingleton<IUserContextService, UserContextService>()
                 .AddSingleton<IStateMachine, StateMachine>()
                 .AddSingleton<IUserSemaphoreService, UserSemaphoreService>()
@@ -32,6 +34,8 @@ namespace BuilderInterpreter
                 .AddSingleton<IStateMachineService, StateMachineService>()
                 .AddSingleton<ICustomActionService, CustomActionService>()
                 .AddSingleton<IComparisonService, ComparisonService>()
+                .AddSingleton<IVariableProvider, ConfigVariableProvider>()
+                .AddSingleton<IVariableProvider, ContactVariableProvider>()
                 .AddSingleton<BlipChannel>()
                 .AddSingleton<DocumentSerializer>()
                 .AddCustomAction<DefaultExecuteScriptAction>()

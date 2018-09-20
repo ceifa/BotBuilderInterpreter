@@ -1,4 +1,5 @@
-﻿using BuilderInterpreter.Interfaces;
+﻿using BuilderInterpreter.Extensions;
+using BuilderInterpreter.Interfaces;
 using BuilderInterpreter.Models;
 using Lime.Protocol;
 using System.Collections.Generic;
@@ -43,30 +44,27 @@ namespace BuilderInterpreter
 
                 userContext = userContext ?? await _userContext.GetUserContext(userIdentity);
 
-                _variableService.AddOrUpdate("config", flow.GlobalVariables, userContext.Variables);
-                _variableService.AddOrUpdate("contact", userContext.Contact, userContext.Variables);
-
                 var state = _stateMachineService.GetCurrentUserState(userContext, flow);
 
                 var oldInput = state.InteractionActions.Single(x => x.Input != default).Input;
                 if (!string.IsNullOrEmpty(oldInput.Variable))
-                    _variableService.AddOrUpdate(oldInput.Variable, input, userContext.Variables);
+                    userContext.SetVariable(oldInput.Variable, input);
 
-                _variableService.AddOrUpdate("input", input, userContext.Variables);
+                userContext.SetVariable("input", input);
 
                 var documents = new List<Document>();
 
                 do
                 {
-                    state = _stateMachineService.GetNextUserState(userContext, state, flow);
+                    state = await _stateMachineService.GetNextUserStateAsync(userContext, state, flow);
 
                     await _customActionService.ExecuteCustomActions(state.EnteringCustomActions, userContext);
 
-                    state.InteractionActions.Where(x => x.Input == default).ForEach(x =>
+                    state.InteractionActions.Where(x => x.Input == default).ForEach(async x =>
                     {
                         var content = x.Action.Message.Content;
 
-                        content = _variableService.ReplaceVariablesInDocument(content, userContext.Variables);
+                        content = await _variableService.ReplaceVariablesInDocumentAsync(content, userContext);
 
                         documents.Add(content);
                     });

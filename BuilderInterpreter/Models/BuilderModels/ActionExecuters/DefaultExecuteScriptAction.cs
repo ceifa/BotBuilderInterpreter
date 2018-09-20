@@ -1,4 +1,5 @@
-﻿using BuilderInterpreter.Interfaces;
+﻿using BuilderInterpreter.Extensions;
+using BuilderInterpreter.Interfaces;
 using Jint;
 using Newtonsoft.Json.Linq;
 using System;
@@ -30,7 +31,7 @@ namespace BuilderInterpreter.Models.BuilderModels.ActionExecuters
 
                 for (int i = 0; i < arguments.Length; i++)
                 {
-                    arguments[i] = _variableService.GetVariableValue(settings.InputVariables[i], userContext.Variables);
+                    arguments[i] = await _variableService.GetVariableValueAsync(settings.InputVariables[i], userContext);
                 }
             }
 
@@ -38,7 +39,7 @@ namespace BuilderInterpreter.Models.BuilderModels.ActionExecuters
 
             var result = arguments == null ? engine.Invoke(settings.Function ?? defaultFunctionName) : engine.Invoke(settings.Function ?? defaultFunctionName, arguments);
 
-            _variableService.AddOrUpdate(settings.OutputVariable, result?.ToObject(), userContext.Variables);
+            userContext.SetVariable(settings.OutputVariable, result?.ToObject());
         }
     }
 }

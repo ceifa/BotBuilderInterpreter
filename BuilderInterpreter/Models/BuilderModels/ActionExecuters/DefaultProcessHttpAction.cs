@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using BuilderInterpreter.Extensions;
 using BuilderInterpreter.Helper;
 using BuilderInterpreter.Interfaces;
 using Newtonsoft.Json.Linq;
@@ -20,14 +21,14 @@ namespace BuilderInterpreter.Models.BuilderModels.ActionExecuters
         {
             var settings = payload.ToObject<ProcessHttp>();
 
-            settings = _variableService.ReplaceVariablesInObject(settings, userContext.Variables);
+            settings = await _variableService.ReplaceVariablesInObjectAsync(settings, userContext);
             var responseMessage = await settings.ExecuteHttpRequest();
 
             var responseBody = await responseMessage.Content.ReadAsStringAsync();
             var responseStatusCode = responseMessage.StatusCode;
 
-            _variableService.AddOrUpdate(settings.ResponseStatusVariable, (int)responseStatusCode, userContext.Variables);
-            _variableService.AddOrUpdate(settings.ResponseBodyVariable, responseBody, userContext.Variables);
+            userContext.SetVariable(settings.ResponseStatusVariable, (int)responseStatusCode);
+            userContext.SetVariable(settings.ResponseBodyVariable, responseBody);
         }
     }
 }

@@ -1,18 +1,17 @@
-﻿using Lime.Protocol;
-using System.Collections.Generic;
+﻿using BuilderInterpreter.Models;
+using Lime.Protocol;
+using System.Threading.Tasks;
 
 namespace BuilderInterpreter.Interfaces
 {
     public interface IVariableService
     {
-        object GetVariableValue(string name, Dictionary<string, object> variables);
+        Task<object> GetVariableValueAsync(string name, UserContext userContext);
 
-        void AddOrUpdate(string name, object value, Dictionary<string, object> variables);
+        Task<string> ReplaceVariablesInStringAsync(string source, UserContext userContext);
 
-        string ReplaceVariablesInString(string source, Dictionary<string, object> variables);
+        Task<Document> ReplaceVariablesInDocumentAsync(Document source, UserContext userContext);
 
-        Document ReplaceVariablesInDocument(Document source, Dictionary<string, object> variables);
-
-        T ReplaceVariablesInObject<T>(T source, Dictionary<string, object> variables);
+        Task<T> ReplaceVariablesInObjectAsync<T>(T source, UserContext userContext);
     }
 }

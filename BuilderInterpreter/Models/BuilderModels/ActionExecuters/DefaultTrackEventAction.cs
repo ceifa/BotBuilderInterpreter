@@ -25,7 +25,7 @@ namespace BuilderInterpreter.Models.BuilderModels.ActionExecuters
 
             FireAndForget.Run(async () =>
             {
-                settings = _variableService.ReplaceVariablesInObject(settings, userContext.Variables);
+                settings = await _variableService.ReplaceVariablesInObjectAsync(settings, userContext);
 
                 await _trackEventService.RegisterEventTrack(settings);
             });

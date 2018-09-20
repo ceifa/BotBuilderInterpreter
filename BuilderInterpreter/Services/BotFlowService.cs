@@ -10,7 +10,6 @@ namespace BuilderInterpreter
         private static BotFlow _cachedBotFlow;
 
         private const string FLOW_BUCKET_KEY = "blip_portal:builder_working_flow";
-        private const string CONFIG_BUCKET_KEY = "blip_portal:builder_working_configuration";
 
         private readonly IBucketBaseService _bucketService;
 
@@ -23,10 +22,7 @@ namespace BuilderInterpreter
         {
             if (_cachedBotFlow == default)
             {
-                var flow = await _bucketService.GetBucketObjectAsync<Dictionary<string, State>>(FLOW_BUCKET_KEY);
-                var configuration = await _bucketService.GetBucketObjectAsync<Dictionary<string, object>>(CONFIG_BUCKET_KEY);
-
-                _cachedBotFlow = new BotFlow(flow, configuration);
+                _cachedBotFlow = new BotFlow(await _bucketService.GetBucketObjectAsync<Dictionary<string, State>>(FLOW_BUCKET_KEY));
             }
 
             return _cachedBotFlow;

@@ -20,7 +20,7 @@ namespace BuilderInterpreter.Models.BuilderModels.ActionExecuters
         {
             var settings = payload.ToObject<MergeContact>();
 
-            settings = _variableService.ReplaceVariablesInObject(settings, userContext.Variables);
+            settings = await _variableService.ReplaceVariablesInObjectAsync(settings, userContext);
             userContext.Contact = CustomActionHelper.MergeObjects(userContext.Contact, settings);
         }
     }

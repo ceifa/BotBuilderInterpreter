@@ -22,7 +22,7 @@ namespace BuilderInterpreter.Models.BuilderModels.ActionExecuters
         {
             var settings = payload.ToObject<ManageList>();
 
-            var listNameReplaced = _variableService.ReplaceVariablesInString(settings.ListName, userContext.Variables);
+            var listNameReplaced = await _variableService.ReplaceVariablesInStringAsync(settings.ListName, userContext);
 
             switch (settings.Action)
             {

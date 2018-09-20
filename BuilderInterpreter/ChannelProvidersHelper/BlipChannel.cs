@@ -1,4 +1,5 @@
-﻿using BuilderInterpreter.Interfaces;
+﻿using BuilderInterpreter.Extensions;
+using BuilderInterpreter.Interfaces;
 using Lime.Protocol;
 using System;
 using System.Collections.Generic;
@@ -22,7 +23,7 @@ namespace BuilderInterpreter.ChannelProvidersHelper
         public async Task MessageReceiverHelper(Message message, Func<Document, Task> sendMessageFunc)
         {
             var user = await _userContext.GetUserContext(message.From);
-            _variableService.AddOrUpdate("message", message, user.Variables);
+            user.SetVariable("message", message);
 
             var documents = await _stateMachineService.HandleUserInput(message.From, message.Content.ToString(), user);
             var messages = new List<DocumentContainer>();

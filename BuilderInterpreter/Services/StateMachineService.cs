@@ -1,7 +1,9 @@
-﻿using BuilderInterpreter.Interfaces;
+﻿using BuilderInterpreter.Extensions;
+using BuilderInterpreter.Interfaces;
 using BuilderInterpreter.Models;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace BuilderInterpreter
 {
@@ -32,23 +34,23 @@ namespace BuilderInterpreter
             return state;
         }
 
-        public State GetNextUserState(UserContext userContext, State lastState, BotFlow botFlow)
+        public async Task<State> GetNextUserStateAsync(UserContext userContext, State lastState, BotFlow botFlow)
         {
             var nextStateId = lastState.DefaultOutput.StateId;
 
             foreach (var outputCondition in lastState.OutputConditions)
             {
-                var matchCondition = outputCondition.Conditions.All(o =>
+                var matchCondition = await outputCondition.Conditions.AllAsync(async o =>
                 {
                     string toCompare;
 
                     switch (o.Source)
                     {
                         case ConditionSource.Input:
-                            toCompare = _variableService.GetVariableValue("input", userContext.Variables).ToString();
+                            toCompare = (await _variableService.GetVariableValueAsync("input", userContext)).ToString();
                             break;
                         case ConditionSource.Context:
-                            toCompare = _variableService.ReplaceVariablesInString(o.Variable, userContext.Variables);
+                            toCompare = await _variableService.ReplaceVariablesInStringAsync(o.Variable, userContext);
                             break;
                         default:
                             throw new NotImplementedException(nameof(o.Source));

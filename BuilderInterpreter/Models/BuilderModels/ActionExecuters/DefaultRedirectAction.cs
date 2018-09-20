@@ -23,7 +23,7 @@ namespace BuilderInterpreter.Models.BuilderModels.ActionExecuters
         {
             var settings = payload.ToObject<Redirect>();
 
-            settings = _variableService.ReplaceVariablesInObject(settings, userContext.Variables);
+            settings = await _variableService.ReplaceVariablesInObjectAsync(settings, userContext);
 
             foreach (var noAction in _noActions)
             {

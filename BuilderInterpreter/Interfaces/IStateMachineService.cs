@@ -1,4 +1,5 @@
 ﻿using BuilderInterpreter.Models;
+using System.Threading.Tasks;
 
 namespace BuilderInterpreter
 {
@@ -6,6 +7,6 @@ namespace BuilderInterpreter
     {
         State GetCurrentUserState(UserContext userContext, BotFlow botFlow);
 
-        State GetNextUserState(UserContext userContext, State lastState, BotFlow botFlow);
+        Task<State> GetNextUserStateAsync(UserContext userContext, State lastState, BotFlow botFlow);
     }
 }

@@ -1,11 +1,10 @@
 ﻿using BuilderInterpreter.Models;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace BuilderInterpreter.Interfaces
 {
-    internal interface IBotFlowService
+    public interface INlpProvider
     {
-        Task<BotFlow> GetBotFlow();
+        Task<NlpResponse> GetNlpResponse(string input, string userIdentity);
     }
 }
