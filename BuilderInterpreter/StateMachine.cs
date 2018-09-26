@@ -16,13 +16,15 @@ namespace BuilderInterpreter
         private readonly IVariableService _variableService;
         private readonly IStateMachineService _stateMachineService;
         private readonly ICustomActionService _customActionService;
+        private readonly INlpProvider _nlpProvider;
 
         public StateMachine(IBotFlowService botFlowService,
             IUserContextService userContext,
             IUserSemaphoreService userSemaphoreService,
             IVariableService variableService,
             ICustomActionService customActionService,
-            IStateMachineService stateMachineService)
+            IStateMachineService stateMachineService,
+            INlpProvider nlpProvider)
         {
             _botFlowService = botFlowService;
             _userContext = userContext;
@@ -30,6 +32,7 @@ namespace BuilderInterpreter
             _variableService = variableService;
             _stateMachineService = stateMachineService;
             _customActionService = customActionService;
+            _nlpProvider = nlpProvider;
         }
 
         public async Task<Document[]> HandleUserInput(string userIdentity, string input, UserContext userContext)
@@ -51,6 +54,7 @@ namespace BuilderInterpreter
                     userContext.SetVariable(oldInput.Variable, input);
 
                 userContext.SetVariable("input", input);
+                userContext.PopulateNlpResponse(input, _nlpProvider);
 
                 var documents = new List<Document>();
 
