@@ -5,9 +5,6 @@ namespace BuilderInterpreter.Models
 {
     public class Intent
     {
-        [JsonProperty("id")]
-        public string IntentId { get; set; }
-
         [JsonProperty("name")]
         public string IntentName { get; set; }
 

@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace BuilderInterpreter.Models
 {
@@ -7,6 +8,7 @@ namespace BuilderInterpreter.Models
         [JsonProperty("intent")]
         public Intent Intent { get; set; }
 
-        //[JsonProperty("entities")]
+        [JsonProperty("entities")]
+        public Dictionary<string, string> Entities { get; set; }
     }
 }
