@@ -52,6 +52,12 @@ namespace BuilderInterpreter
                         case ConditionSource.Context:
                             toCompare = await _variableService.ReplaceVariablesInStringAsync(o.Variable, userContext);
                             break;
+                        case ConditionSource.Intent:
+                            toCompare = (await userContext.NlpResponse)?.Intent?.IntentName;
+                            break;
+                        case ConditionSource.Entity:
+                            toCompare = (await userContext.NlpResponse)?.Entities?[o.Entity];
+                            break;
                         default:
                             throw new NotImplementedException(nameof(o.Source));
                     }

@@ -11,6 +11,7 @@ using Lime.Protocol.Serialization;
 using Microsoft.Extensions.DependencyInjection;
 using RestEase;
 using System;
+using System.Linq;
 using System.Net.Http;
 
 namespace BuilderInterpreter
@@ -44,7 +45,18 @@ namespace BuilderInterpreter
                 .AddCustomAction<DefaultProcessHttpAction>()
                 .AddCustomAction<DefaultRedirectAction>()
                 .AddCustomAction<DefaultTrackEventAction>()
+                .AddNlpProvider<DefaultNlpProvider>()
                 .AddMemoryCache();
+        }
+
+        public static IServiceCollection AddNlpProvider<TNlpProvider>(this IServiceCollection container) where TNlpProvider : class, INlpProvider
+        {
+            var current = container.SingleOrDefault(s => s.ServiceType == typeof(INlpProvider));
+
+            if (current != default)
+                container.Remove(current);
+
+            return container.AddSingleton<INlpProvider, TNlpProvider>();
         }
 
         public static IServiceCollection AddCustomAction<TCustomAction>(this IServiceCollection container) where TCustomAction : class, ICustomAction

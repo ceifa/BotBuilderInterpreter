@@ -3,6 +3,8 @@
     internal enum ConditionSource
     {
         Input,
-        Context
+        Context,
+        Intent,
+        Entity
     }
 }

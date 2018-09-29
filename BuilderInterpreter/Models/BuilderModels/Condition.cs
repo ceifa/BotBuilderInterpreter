@@ -15,5 +15,8 @@ namespace BuilderInterpreter.Models
 
         [JsonProperty("variable")]
         public string Variable { get; set; }
+
+        [JsonProperty("entity")]
+        public string Entity { get; set; }
     }
 }
