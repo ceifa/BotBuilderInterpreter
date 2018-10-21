@@ -1,5 +1,4 @@
-﻿using System;
-using System.Net.Http;
+﻿using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -20,7 +19,7 @@ namespace BuilderInterpreter.Helper
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            var response = new HttpResponseMessage();
+            HttpResponseMessage response = default;
             var tries = 0;
 
             do
@@ -29,11 +28,12 @@ namespace BuilderInterpreter.Helper
                 {
                     response = await base.SendAsync(request, cancellationToken);
                 }
-                catch (Exception e)
+                catch
                 {
-                    throw;
+                    if (tries - 1 == MaxRetries)
+                        throw;
                 }
-            } while (!response.IsSuccessStatusCode && ++tries < MaxRetries);
+            } while (response?.IsSuccessStatusCode != true && ++tries < MaxRetries);
 
             return response;
         }
