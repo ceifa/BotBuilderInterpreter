@@ -18,6 +18,8 @@ namespace BuilderInterpreter
 {
     public static class ServiceRegistrator
     {
+        private const string BlipBaseUri = "https://msging.net";
+
         public static IServiceCollection AddBuilderInterpreter(this IServiceCollection container, Configuration configuration)
         {
             return container.AddSingleton(BlipProviderFactory())
@@ -73,7 +75,7 @@ namespace BuilderInterpreter
         {
             return RestClient.For<IBlipProvider>(new HttpClient(new RetryHandler())
             {
-                BaseAddress = new Uri("https://msging.net")
+                BaseAddress = new Uri(BlipBaseUri)
             });
         }
     }

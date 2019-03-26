@@ -20,19 +20,12 @@ namespace BuilderInterpreter.Helper
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            var response = new HttpResponseMessage();
+            HttpResponseMessage response;
             var tries = 0;
 
             do
             {
-                try
-                {
-                    response = await base.SendAsync(request, cancellationToken);
-                }
-                catch (Exception e)
-                {
-                    throw;
-                }
+                response = await base.SendAsync(request, cancellationToken);
             } while (!response.IsSuccessStatusCode && ++tries < MaxRetries);
 
             return response;

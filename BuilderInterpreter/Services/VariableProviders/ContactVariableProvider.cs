@@ -8,6 +8,6 @@ namespace BuilderInterpreter.Services.VariableProviders
     {
         public string VariableName => "contact";
 
-        public async Task<object> GetVariableValue(UserContext userContext) => userContext.Contact;
+        public Task<object> GetVariableValue(UserContext userContext) => Task.FromResult<object>(userContext.Contact);
     }
 }

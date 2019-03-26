@@ -8,6 +8,12 @@ namespace BuilderInterpreter.Extensions
     {
         public static async Task<bool> AllAsync<T>(this IEnumerable<T> source, Func<T, Task<bool>> predicate)
         {
+            if (source == null)
+                throw new ArgumentNullException(nameof(source));
+
+            if (predicate == null)
+                throw new ArgumentNullException(nameof(predicate));
+
             foreach (var item in source)
             {
                 if (!await predicate(item))
