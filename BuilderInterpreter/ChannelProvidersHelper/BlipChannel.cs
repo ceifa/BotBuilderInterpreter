@@ -23,7 +23,7 @@ namespace BuilderInterpreter.ChannelProvidersHelper
         public async Task MessageReceiverHelper(Message message, Func<Document, Task> sendMessageFunc)
         {
             var user = await _userContext.GetUserContext(message.From);
-            user.SetVariable("message", message);
+            user.SetVariable(nameof(message), message);
 
             var documents = await _stateMachineService.HandleUserInput(message.From, message.Content.ToString(), user);
             var messages = new List<DocumentContainer>();
@@ -45,7 +45,7 @@ namespace BuilderInterpreter.ChannelProvidersHelper
                         messages.Clear();
                     }
 
-                    if ((document as JsonDocument)?.TryGetValue("interval", out interval) == true)
+                    if ((document as JsonDocument)?.TryGetValue(nameof(interval), out interval) == true)
                     {
                         await sendMessageFunc(document);
                         await Task.Delay(Convert.ToInt32(interval));

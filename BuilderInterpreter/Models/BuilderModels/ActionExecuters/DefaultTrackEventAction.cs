@@ -19,7 +19,7 @@ namespace BuilderInterpreter.Models.BuilderModels.ActionExecuters
 
         public CustomActionType ActionType => CustomActionType.TrackEvent;
 
-        public async Task ExecuteActionAsync(UserContext userContext, JObject payload)
+        public Task ExecuteActionAsync(UserContext userContext, JObject payload)
         {
             var settings = payload.ToObject<TrackEventAction>();
 
@@ -29,6 +29,8 @@ namespace BuilderInterpreter.Models.BuilderModels.ActionExecuters
 
                 await _trackEventService.RegisterEventTrack(settings);
             });
+
+            return Task.CompletedTask;
         }
     }
 }

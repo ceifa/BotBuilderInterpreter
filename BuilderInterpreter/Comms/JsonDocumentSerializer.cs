@@ -33,7 +33,6 @@ namespace BuilderInterpreter.Comms
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-
         }
     }
 }
