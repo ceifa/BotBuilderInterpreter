@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Net.Http;
-using BuilderInterpreter.ChannelProvidersHelper;
 using BuilderInterpreter.Helper;
 using BuilderInterpreter.Interfaces;
 using BuilderInterpreter.Models;
@@ -38,7 +37,6 @@ namespace BuilderInterpreter
                 .AddSingleton<IComparisonService, ComparisonService>()
                 .AddSingleton<IVariableProvider, ConfigVariableProvider>()
                 .AddSingleton<IVariableProvider, ContactVariableProvider>()
-                .AddSingleton<BlipChannel>()
                 .AddSingleton<DocumentSerializer>()
                 .AddCustomAction<DefaultExecuteScriptAction>()
                 .AddCustomAction<DefaultManageListAction>()
