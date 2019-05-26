@@ -1,8 +1,8 @@
-﻿using BuilderInterpreter.Interfaces;
+﻿using System.Linq;
+using System.Threading.Tasks;
+using BuilderInterpreter.Interfaces;
 using BuilderInterpreter.Models;
 using Newtonsoft.Json.Linq;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace BuilderInterpreter
 {

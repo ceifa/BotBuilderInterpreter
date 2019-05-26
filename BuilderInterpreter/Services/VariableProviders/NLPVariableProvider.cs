@@ -1,6 +1,6 @@
-﻿using BuilderInterpreter.Interfaces;
+﻿using System.Threading.Tasks;
+using BuilderInterpreter.Interfaces;
 using BuilderInterpreter.Models;
-using System.Threading.Tasks;
 
 namespace BuilderInterpreter.Services.VariableProviders
 {
@@ -8,6 +8,9 @@ namespace BuilderInterpreter.Services.VariableProviders
     {
         public string VariableName => "ai";
 
-        public async Task<object> GetVariableValue(UserContext userContext) => await userContext.NlpResponse;
+        public async Task<object> GetVariableValue(UserContext userContext)
+        {
+            return await userContext.NlpResponse;
+        }
     }
 }

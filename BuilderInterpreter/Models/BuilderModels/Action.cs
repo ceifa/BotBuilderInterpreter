@@ -6,8 +6,7 @@ namespace BuilderInterpreter.Models
 {
     internal class Action
     {
-        [JsonProperty("type")]
-        public string Type { get; set; }
+        [JsonProperty("type")] public string Type { get; set; }
 
         [JsonProperty("settings")]
         [JsonConverter(typeof(JsonDocumentSerializer))]

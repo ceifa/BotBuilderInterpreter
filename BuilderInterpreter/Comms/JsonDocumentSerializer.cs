@@ -1,8 +1,9 @@
-﻿using Lime.Protocol;
+﻿using System;
+using Lime.Protocol;
 using Lime.Protocol.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System;
+using Message = BuilderInterpreter.Models.BuilderModels.Message;
 
 namespace BuilderInterpreter.Comms
 {
@@ -20,14 +21,16 @@ namespace BuilderInterpreter.Comms
             return true;
         }
 
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        public override object ReadJson(JsonReader reader, Type objectType, object existingValue,
+            JsonSerializer serializer)
         {
             var jObject = JObject.Load(reader);
-            return new Models.BuilderModels.Message
+            return new Message
             {
                 Id = jObject["id"].ToString(),
                 Type = jObject["type"].ToString(),
-                Content = _serializer.Deserialize(jObject["content"].ToString(), MediaType.Parse(jObject["type"].ToString()))
+                Content = _serializer.Deserialize(jObject["content"].ToString(),
+                    MediaType.Parse(jObject["type"].ToString()))
             };
         }
 

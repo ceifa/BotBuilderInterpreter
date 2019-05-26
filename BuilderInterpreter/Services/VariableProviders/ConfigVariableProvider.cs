@@ -1,6 +1,6 @@
-﻿using BuilderInterpreter.Interfaces;
+﻿using System.Threading.Tasks;
+using BuilderInterpreter.Interfaces;
 using BuilderInterpreter.Models;
-using System.Threading.Tasks;
 
 namespace BuilderInterpreter.Services.VariableProviders
 {

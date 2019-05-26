@@ -1,15 +1,14 @@
-﻿using BuilderInterpreter.Interfaces;
-using BuilderInterpreter.Models;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using BuilderInterpreter.Interfaces;
+using BuilderInterpreter.Models;
 
 namespace BuilderInterpreter
 {
     internal class BotFlowService : IBotFlowService
     {
-        private static BotFlow _cachedBotFlow;
-
         private const string FLOW_BUCKET_KEY = "blip_portal:builder_working_flow";
+        private static BotFlow _cachedBotFlow;
 
         private readonly IBucketBaseService _bucketService;
 
@@ -20,12 +19,9 @@ namespace BuilderInterpreter
 
         public async Task<BotFlow> GetBotFlow()
         {
-            if (_cachedBotFlow == default)
-            {
-                _cachedBotFlow = new BotFlow(await _bucketService.GetBucketObjectAsync<Dictionary<string, State>>(FLOW_BUCKET_KEY));
-            }
-
-            return _cachedBotFlow;
+            return _cachedBotFlow ?? (_cachedBotFlow =
+                       new BotFlow(
+                           await _bucketService.GetBucketObjectAsync<Dictionary<string, State>>(FLOW_BUCKET_KEY)));
         }
     }
 }

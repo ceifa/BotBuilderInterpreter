@@ -1,7 +1,7 @@
-﻿using BuilderInterpreter.Helper;
+﻿using System.Threading.Tasks;
+using BuilderInterpreter.Helper;
 using BuilderInterpreter.Interfaces;
 using Newtonsoft.Json.Linq;
-using System.Threading.Tasks;
 
 namespace BuilderInterpreter.Models.BuilderModels.ActionExecuters
 {

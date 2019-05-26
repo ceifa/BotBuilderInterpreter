@@ -1,8 +1,8 @@
-﻿using BuilderInterpreter.Interfaces;
+﻿using System;
+using System.Threading.Tasks;
+using BuilderInterpreter.Interfaces;
 using BuilderInterpreter.Models;
 using Newtonsoft.Json;
-using System;
-using System.Threading.Tasks;
 
 namespace BuilderInterpreter
 {
@@ -20,11 +20,11 @@ namespace BuilderInterpreter
         public async Task<bool> DeleteBucketAsync(string key)
         {
             var uri = $"/{COMMAND_KEYWORD}/{Uri.EscapeDataString(key)}";
-            
+
             var command = new BlipCommand
             {
                 Method = CommandMethod.DELETE,
-                Uri = uri,
+                Uri = uri
             };
 
             var response = await _blipService.SendCommandAsync(command);

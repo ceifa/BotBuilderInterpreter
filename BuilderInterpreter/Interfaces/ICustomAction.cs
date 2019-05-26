@@ -1,6 +1,6 @@
-﻿using BuilderInterpreter.Models;
+﻿using System.Threading.Tasks;
+using BuilderInterpreter.Models;
 using Newtonsoft.Json.Linq;
-using System.Threading.Tasks;
 
 namespace BuilderInterpreter.Interfaces
 {

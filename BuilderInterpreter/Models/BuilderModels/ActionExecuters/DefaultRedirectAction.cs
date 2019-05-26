@@ -1,8 +1,8 @@
-﻿using BuilderInterpreter.Attributes;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using BuilderInterpreter.Attributes;
 using BuilderInterpreter.Interfaces;
 using Newtonsoft.Json.Linq;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace BuilderInterpreter.Models.BuilderModels.ActionExecuters
 {
@@ -32,18 +32,16 @@ namespace BuilderInterpreter.Models.BuilderModels.ActionExecuters
 
                 if (attr?.Length == 1)
                 {
-                    var token = (NoActionTokenAttribute)attr[0];
+                    var token = (NoActionTokenAttribute) attr[0];
 
                     if (token.Token == settings.Address)
-                    {
                         try
                         {
-                            await(Task)method.Invoke(noAction, new object[] { settings.Context?.Value, userContext });
+                            await (Task) method.Invoke(noAction, new object[] {settings.Context?.Value, userContext});
                         }
                         catch
                         {
                         }
-                    }
                 }
             }
         }

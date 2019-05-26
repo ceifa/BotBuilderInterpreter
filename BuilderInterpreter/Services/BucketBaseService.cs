@@ -1,7 +1,7 @@
-﻿using BuilderInterpreter.Interfaces;
-using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Threading.Tasks;
+using BuilderInterpreter.Interfaces;
+using Newtonsoft.Json;
 
 namespace BuilderInterpreter
 {
@@ -21,8 +21,14 @@ namespace BuilderInterpreter
             return JsonConvert.DeserializeObject<T>(json);
         }
 
-        public Task<bool> SetBucketObjectAsync<T>(string key, T document, TimeSpan expiration = default) => SetBucketAsync(key, document, expiration);
+        public Task<bool> SetBucketObjectAsync<T>(string key, T document, TimeSpan expiration = default)
+        {
+            return SetBucketAsync(key, document, expiration);
+        }
 
-        public Task<bool> DeleteBucketObjectAsync(string key) => DeleteBucketAsync(key);
+        public Task<bool> DeleteBucketObjectAsync(string key)
+        {
+            return DeleteBucketAsync(key);
+        }
     }
 }

@@ -1,9 +1,8 @@
-﻿using BuilderInterpreter.Interfaces;
-using BuilderInterpreter.Models;
-using Lime.Protocol;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BuilderInterpreter.Interfaces;
+using BuilderInterpreter.Models;
 
 namespace BuilderInterpreter.Services
 {
@@ -23,14 +22,10 @@ namespace BuilderInterpreter.Services
                 var possibleActions = _customActions.Where(c => c.ActionType == customAction.Type);
 
                 if (possibleActions.Count() > 1)
-                {
                     possibleActions = possibleActions.Where(p => !(p is IDefaultCustomAction));
-                }
 
                 foreach (var action in possibleActions)
-                {
                     await action.ExecuteActionAsync(userContext, customAction.Settings);
-                }
             }
         }
     }

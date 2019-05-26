@@ -1,15 +1,15 @@
-﻿using BuilderInterpreter.Helper;
+﻿using System.Threading.Tasks;
+using BuilderInterpreter.Helper;
 using BuilderInterpreter.Interfaces;
 using BuilderInterpreter.Models.BuilderModels.CustomActions;
 using Newtonsoft.Json.Linq;
-using System.Threading.Tasks;
 
 namespace BuilderInterpreter.Models.BuilderModels.ActionExecuters
 {
     internal class DefaultTrackEventAction : ICustomAction, IDefaultCustomAction
     {
-        private readonly IVariableService _variableService;
         private readonly ITrackEventService _trackEventService;
+        private readonly IVariableService _variableService;
 
         public DefaultTrackEventAction(IVariableService variableService, ITrackEventService trackEventService)
         {

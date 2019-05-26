@@ -1,6 +1,6 @@
-﻿using Lime.Protocol;
+﻿using System;
+using Lime.Protocol;
 using Newtonsoft.Json;
-using System;
 
 namespace BuilderInterpreter.Models
 {
@@ -16,14 +16,12 @@ namespace BuilderInterpreter.Models
             Id = id;
         }
 
-        [JsonProperty("id")]
-        public string Id { get; set; }
+        [JsonProperty("id")] public string Id { get; set; }
 
         [JsonProperty("to", DefaultValueHandling = DefaultValueHandling.Ignore)]
         public string To { get; set; }
 
-        [JsonProperty("uri")]
-        public string Uri { get; set; }
+        [JsonProperty("uri")] public string Uri { get; set; }
 
         [JsonProperty("type", DefaultValueHandling = DefaultValueHandling.Ignore)]
         public string Type { get; set; }

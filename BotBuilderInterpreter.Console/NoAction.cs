@@ -5,7 +5,7 @@ using BuilderInterpreter.Models;
 
 namespace BotBuilderInterpreter.Console
 {
-    class NoAction : INoAction
+    internal class NoAction : INoAction
     {
         [NoActionToken("testee")]
         public Task ExecuteNoAction(string extras, UserContext userContext)

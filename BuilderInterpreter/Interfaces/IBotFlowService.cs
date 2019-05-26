@@ -1,6 +1,5 @@
-﻿using BuilderInterpreter.Models;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using BuilderInterpreter.Models;
 
 namespace BuilderInterpreter.Interfaces
 {

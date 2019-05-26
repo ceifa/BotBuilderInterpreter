@@ -6,9 +6,8 @@ namespace BuilderInterpreter.Services
 {
     internal class BotConfigurationService : IBotConfigurationService
     {
-        private static Dictionary<string, string> _cachedBotConfiguration;
-
         private const string CONFIG_BUCKET_KEY = "blip_portal:builder_working_configuration";
+        private static Dictionary<string, string> _cachedBotConfiguration;
 
         private readonly IBucketBaseService _bucketService;
 
@@ -19,12 +18,8 @@ namespace BuilderInterpreter.Services
 
         public async Task<Dictionary<string, string>> GetBotConfigurationAsync()
         {
-            if (_cachedBotConfiguration == default)
-            {
-                _cachedBotConfiguration = await _bucketService.GetBucketObjectAsync<Dictionary<string, string>>(CONFIG_BUCKET_KEY);
-            }
-
-            return _cachedBotConfiguration;
+            return _cachedBotConfiguration ?? (_cachedBotConfiguration =
+                       await _bucketService.GetBucketObjectAsync<Dictionary<string, string>>(CONFIG_BUCKET_KEY));
         }
     }
 }

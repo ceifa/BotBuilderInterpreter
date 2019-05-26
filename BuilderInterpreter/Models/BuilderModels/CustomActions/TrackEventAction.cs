@@ -1,8 +1,6 @@
-﻿using BuilderInterpreter.Interfaces;
-
-namespace BuilderInterpreter.Models.BuilderModels.CustomActions
+﻿namespace BuilderInterpreter.Models.BuilderModels.CustomActions
 {
-    class TrackEventAction : TrackEvent
+    internal class TrackEventAction : TrackEvent
     {
     }
 }

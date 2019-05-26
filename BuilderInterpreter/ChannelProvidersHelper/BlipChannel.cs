@@ -1,9 +1,9 @@
-﻿using BuilderInterpreter.Extensions;
-using BuilderInterpreter.Interfaces;
-using Lime.Protocol;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using BuilderInterpreter.Extensions;
+using BuilderInterpreter.Interfaces;
+using Lime.Protocol;
 
 namespace BuilderInterpreter.ChannelProvidersHelper
 {
@@ -11,13 +11,11 @@ namespace BuilderInterpreter.ChannelProvidersHelper
     {
         private readonly IStateMachine _stateMachineService;
         private readonly IUserContextService _userContext;
-        private readonly IVariableService _variableService;
 
-        public BlipChannel(IStateMachine stateMachineService, IUserContextService userContext, IVariableService variableService)
+        public BlipChannel(IStateMachine stateMachineService, IUserContextService userContext, )
         {
             _stateMachineService = stateMachineService;
             _userContext = userContext;
-            _variableService = variableService;
         }
 
         public async Task MessageReceiverHelper(Message message, Func<Document, Task> sendMessageFunc)
@@ -29,7 +27,6 @@ namespace BuilderInterpreter.ChannelProvidersHelper
             var messages = new List<DocumentContainer>();
 
             foreach (var document in documents)
-            {
                 if (document.GetMediaType() == "application/vnd.lime.chatstate+json")
                 {
                     object interval = null;
@@ -58,16 +55,13 @@ namespace BuilderInterpreter.ChannelProvidersHelper
                         Value = document
                     });
                 }
-            }
 
             if (messages.Count > 0)
-            {
                 await sendMessageFunc(new DocumentCollection
                 {
                     ItemType = DocumentContainer.MediaType,
                     Items = messages.ToArray()
                 });
-            }
         }
     }
 }

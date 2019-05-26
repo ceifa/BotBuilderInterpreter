@@ -17,7 +17,8 @@ namespace BuilderInterpreter.Helper
             MaxRetries = maxRetries;
         }
 
-        protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+        protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request,
+            CancellationToken cancellationToken)
         {
             HttpResponseMessage response = default;
             var tries = 0;

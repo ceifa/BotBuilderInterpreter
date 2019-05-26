@@ -1,9 +1,9 @@
-﻿using BuilderInterpreter.Extensions;
+﻿using System;
+using System.Threading.Tasks;
+using BuilderInterpreter.Extensions;
 using BuilderInterpreter.Interfaces;
 using Jint;
 using Newtonsoft.Json.Linq;
-using System;
-using System.Threading.Tasks;
 
 namespace BuilderInterpreter.Models.BuilderModels.ActionExecuters
 {
@@ -29,15 +29,19 @@ namespace BuilderInterpreter.Models.BuilderModels.ActionExecuters
             {
                 arguments = new object[settings.InputVariables.Length];
 
-                for (int i = 0; i < arguments.Length; i++)
-                {
-                    arguments[i] = await _variableService.GetVariableValueAsync(settings.InputVariables[i], userContext);
-                }
+                for (var i = 0; i < arguments.Length; i++)
+                    arguments[i] =
+                        await _variableService.GetVariableValueAsync(settings.InputVariables[i], userContext);
             }
 
-            var engine = new Engine(factory => factory.LimitRecursion(5).MaxStatements(50).TimeoutInterval(TimeSpan.FromSeconds(5))).Execute(settings.Source);
+            var engine =
+                new Engine(factory =>
+                        factory.LimitRecursion(5).MaxStatements(50).TimeoutInterval(TimeSpan.FromSeconds(5)))
+                    .Execute(settings.Source);
 
-            var result = arguments == null ? engine.Invoke(settings.Function ?? defaultFunctionName) : engine.Invoke(settings.Function ?? defaultFunctionName, arguments);
+            var result = arguments == null
+                ? engine.Invoke(settings.Function ?? defaultFunctionName)
+                : engine.Invoke(settings.Function ?? defaultFunctionName, arguments);
 
             userContext.SetVariable(settings.OutputVariable, result?.ToObject());
         }

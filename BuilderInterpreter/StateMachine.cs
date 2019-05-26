@@ -1,22 +1,22 @@
-﻿using BuilderInterpreter.Extensions;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using BuilderInterpreter.Extensions;
 using BuilderInterpreter.Interfaces;
 using BuilderInterpreter.Models;
 using Lime.Protocol;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace BuilderInterpreter
 {
     internal class StateMachine : IStateMachine
     {
         private readonly IBotFlowService _botFlowService;
+        private readonly ICustomActionService _customActionService;
+        private readonly INlpProvider _nlpProvider;
+        private readonly IStateMachineService _stateMachineService;
         private readonly IUserContextService _userContext;
         private readonly IUserSemaphoreService _userSemaphoreService;
         private readonly IVariableService _variableService;
-        private readonly IStateMachineService _stateMachineService;
-        private readonly ICustomActionService _customActionService;
-        private readonly INlpProvider _nlpProvider;
 
         public StateMachine(IBotFlowService botFlowService,
             IUserContextService userContext,

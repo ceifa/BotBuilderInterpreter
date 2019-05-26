@@ -1,7 +1,7 @@
-﻿using BuilderInterpreter.Interfaces;
-using Newtonsoft.Json.Linq;
-using System;
+﻿using System;
 using System.Threading.Tasks;
+using BuilderInterpreter.Interfaces;
+using Newtonsoft.Json.Linq;
 
 namespace BuilderInterpreter.Models.BuilderModels.ActionExecuters
 {
@@ -10,7 +10,8 @@ namespace BuilderInterpreter.Models.BuilderModels.ActionExecuters
         private readonly IDistributionListService _distributionListService;
         private readonly IVariableService _variableService;
 
-        public DefaultManageListAction(IDistributionListService distributionListService, IVariableService variableService)
+        public DefaultManageListAction(IDistributionListService distributionListService,
+            IVariableService variableService)
         {
             _distributionListService = distributionListService;
             _variableService = variableService;
@@ -29,9 +30,11 @@ namespace BuilderInterpreter.Models.BuilderModels.ActionExecuters
                 case ManageListAction.Add:
                     await _distributionListService.AddMemberOrCreateList(listNameReplaced, userContext.Identity);
                     break;
+
                 case ManageListAction.Remove:
                     await _distributionListService.RemoveMemberFromList(listNameReplaced, userContext.Identity);
                     break;
+
                 default:
                     throw new NotImplementedException(nameof(settings.Action));
             }

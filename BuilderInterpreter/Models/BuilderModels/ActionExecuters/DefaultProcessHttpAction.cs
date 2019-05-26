@@ -27,7 +27,7 @@ namespace BuilderInterpreter.Models.BuilderModels.ActionExecuters
             var responseBody = await responseMessage.Content.ReadAsStringAsync();
             var responseStatusCode = responseMessage.StatusCode;
 
-            userContext.SetVariable(settings.ResponseStatusVariable, (int)responseStatusCode);
+            userContext.SetVariable(settings.ResponseStatusVariable, (int) responseStatusCode);
             userContext.SetVariable(settings.ResponseBodyVariable, responseBody);
         }
     }

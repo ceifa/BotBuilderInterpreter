@@ -1,9 +1,9 @@
-﻿using BuilderInterpreter.Models.BuilderModels;
-using Lime.Protocol;
-using System;
+﻿using System;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using BuilderInterpreter.Models.BuilderModels;
+using Lime.Protocol;
 
 namespace BuilderInterpreter.Helper
 {
@@ -11,7 +11,7 @@ namespace BuilderInterpreter.Helper
     {
         public static async Task<HttpResponseMessage> ExecuteHttpRequest(this ProcessHttp processHttp)
         {
-            using (HttpClient httpClient = new HttpClient(new RetryHandler(1)))
+            using (var httpClient = new HttpClient(new RetryHandler(1)))
             {
                 var requestMessage = new HttpRequestMessage
                 {
@@ -35,7 +35,7 @@ namespace BuilderInterpreter.Helper
 
         public static T MergeObjects<T>(T oldObject, T objectToMerge)
         {
-            Type t = typeof(T);
+            var t = typeof(T);
 
             var properties = t.GetProperties().Where(prop => prop.CanRead && prop.CanWrite);
 

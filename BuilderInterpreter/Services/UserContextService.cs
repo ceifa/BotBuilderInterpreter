@@ -1,9 +1,9 @@
-﻿using BuilderInterpreter.Interfaces;
-using BuilderInterpreter.Models;
-using Microsoft.Extensions.Caching.Memory;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using BuilderInterpreter.Interfaces;
+using BuilderInterpreter.Models;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace BuilderInterpreter
 {
@@ -31,14 +31,12 @@ namespace BuilderInterpreter
                 var userContext = await _bucketService.GetBucketObjectAsync<UserContext>(bucketIdentifier);
 
                 if (userContext == default)
-                {
                     userContext = new UserContext
                     {
                         Identity = userIdentity,
                         Variables = new Dictionary<string, object>(),
                         Contact = new UserContact()
                     };
-                }
 
                 return userContext;
             });
@@ -48,12 +46,16 @@ namespace BuilderInterpreter
         {
             var bucketIdentifier = GetBucketIdentifier(userIdentity);
 
-            var bucketSaveSuccess = await _bucketService.SetBucketObjectAsync(bucketIdentifier, userContext, TimeSpan.FromDays(2));
+            var bucketSaveSuccess =
+                await _bucketService.SetBucketObjectAsync(bucketIdentifier, userContext, TimeSpan.FromDays(2));
             var memoryCacheSaveSuccess = _memoryCache.Set(userIdentity, userContext) != default;
 
             return bucketSaveSuccess && memoryCacheSaveSuccess;
         }
 
-        private string GetBucketIdentifier(string userIdentity) => $"{BUCKET_KEYWORD}_{userIdentity}";
+        private string GetBucketIdentifier(string userIdentity)
+        {
+            return $"{BUCKET_KEYWORD}_{userIdentity}";
+        }
     }
 }

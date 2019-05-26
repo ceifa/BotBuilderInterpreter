@@ -1,19 +1,20 @@
-﻿using BuilderInterpreter.Extensions;
-using BuilderInterpreter.Interfaces;
-using BuilderInterpreter.Models;
-using System;
+﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using BuilderInterpreter.Extensions;
+using BuilderInterpreter.Interfaces;
+using BuilderInterpreter.Models;
 
 namespace BuilderInterpreter
 {
     internal class StateMachineService : IStateMachineService
     {
-        private readonly IVariableService _variableService;
-        private readonly IComparisonService _comparisonService;
         private readonly IBotFlowService _botFlowService;
+        private readonly IComparisonService _comparisonService;
+        private readonly IVariableService _variableService;
 
-        public StateMachineService(IBotFlowService botFlowService, IVariableService variableService, IComparisonService comparisonService)
+        public StateMachineService(IBotFlowService botFlowService, IVariableService variableService,
+            IComparisonService comparisonService)
         {
             _variableService = variableService;
             _comparisonService = comparisonService;
@@ -26,10 +27,7 @@ namespace BuilderInterpreter
 
             var state = string.IsNullOrEmpty(stateId) ? default : botFlow.States[stateId];
 
-            if (state == default)
-            {
-                state = botFlow.States.Values.Single(x => x.IsRoot);
-            }
+            if (state == default) state = botFlow.States.Values.Single(x => x.IsRoot);
 
             return state;
         }
@@ -49,15 +47,19 @@ namespace BuilderInterpreter
                         case ConditionSource.Input:
                             toCompare = (await _variableService.GetVariableValueAsync("input", userContext)).ToString();
                             break;
+
                         case ConditionSource.Context:
                             toCompare = await _variableService.ReplaceVariablesInStringAsync(o.Variable, userContext);
                             break;
+
                         case ConditionSource.Intent:
                             toCompare = (await userContext.NlpResponse)?.Intent?.IntentName;
                             break;
+
                         case ConditionSource.Entity:
                             toCompare = (await userContext.NlpResponse)?.Entities?[o.Entity];
                             break;
+
                         default:
                             throw new NotImplementedException(nameof(o.Source));
                     }
@@ -69,9 +71,11 @@ namespace BuilderInterpreter
                         case ComparisonType.Unary:
                             var unaryComparer = _comparisonService.GetUnaryConditionComparator(o.Comparison);
                             return unaryComparer(toCompare);
+
                         case ComparisonType.Binary:
                             var binaryComparer = _comparisonService.GetBinaryConditionComparator(o.Comparison);
                             return o.Values.Any(v => binaryComparer(toCompare, v));
+
                         default:
                             throw new NotImplementedException(nameof(comparisonType));
                     }

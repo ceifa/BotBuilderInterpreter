@@ -1,13 +1,12 @@
-﻿using BuilderInterpreter.Models;
+﻿using System.Threading.Tasks;
+using BuilderInterpreter.Models;
 using RestEase;
-using System.Threading.Tasks;
 
 namespace BuilderInterpreter.Interfaces
 {
     public interface IBlipProvider
     {
-        [Header("Authorization")]
-        string AuthorizationKey { get; set; }
+        [Header("Authorization")] string AuthorizationKey { get; set; }
 
         [Header("Content-Type", "application/json")]
         [Post("commands")]

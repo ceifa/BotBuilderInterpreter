@@ -1,11 +1,11 @@
-﻿using BuilderInterpreter.ChannelProvidersHelper;
+﻿using System.Threading.Tasks;
+using BuilderInterpreter.ChannelProvidersHelper;
 using Lime.Protocol;
-using System.Threading.Tasks;
 using Take.Blip.Client;
 
 namespace BuilderInterpreter.ConsoleApp
 {
-    class MessageReceiver
+    internal class MessageReceiver
     {
         private readonly BlipChannel _blipChannel;
         private readonly IBlipClient _sender;
@@ -16,7 +16,7 @@ namespace BuilderInterpreter.ConsoleApp
             _sender = sender;
         }
 
-        public async Task<bool> ReceiveMessage(Message message)
+        public async Task<bool> ReceiveMessageAsync(Message message)
         {
             if (message.Metadata.ContainsKey("#resentCount"))
                 return false;

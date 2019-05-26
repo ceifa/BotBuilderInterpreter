@@ -15,10 +15,8 @@ namespace BuilderInterpreter.Extensions
                 throw new ArgumentNullException(nameof(predicate));
 
             foreach (var item in source)
-            {
                 if (!await predicate(item))
                     return false;
-            }
 
             return true;
         }

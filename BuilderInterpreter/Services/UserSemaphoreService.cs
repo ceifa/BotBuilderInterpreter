@@ -1,8 +1,8 @@
-﻿using BuilderInterpreter.Interfaces;
-using Microsoft.Extensions.Caching.Memory;
-using System;
+﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using BuilderInterpreter.Interfaces;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace BuilderInterpreter
 {

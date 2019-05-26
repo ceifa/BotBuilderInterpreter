@@ -1,10 +1,10 @@
-﻿using BuilderInterpreter.Interfaces;
+﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
+using BuilderInterpreter.Interfaces;
 using BuilderInterpreter.Models;
 using Lime.Protocol;
 using Newtonsoft.Json.Linq;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace BuilderInterpreter
 {
@@ -52,7 +52,8 @@ namespace BuilderInterpreter
             {
                 To = POSTMASTER_ADDRESS,
                 Method = CommandMethod.DELETE,
-                Uri = $"/{COMMAND_KEYWORD}/{Uri.EscapeDataString(listIdentity)}/recipients/{Uri.EscapeDataString(userIdentity)}",
+                Uri =
+                    $"/{COMMAND_KEYWORD}/{Uri.EscapeDataString(listIdentity)}/recipients/{Uri.EscapeDataString(userIdentity)}"
             });
 
             return response.Status == CommandStatus.SUCCESS;
@@ -80,7 +81,7 @@ namespace BuilderInterpreter
                 Method = CommandMethod.SET,
                 Type = DISTRIBUTION_LIST_TYPE,
                 Uri = $"/{COMMAND_KEYWORD}",
-                Resource = new { identity = listIdentity }
+                Resource = new {identity = listIdentity}
             });
 
             return response.Status == CommandStatus.SUCCESS;

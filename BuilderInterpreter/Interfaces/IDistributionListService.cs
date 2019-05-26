@@ -1,5 +1,5 @@
-﻿using Lime.Protocol;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using Lime.Protocol;
 
 namespace BuilderInterpreter
 {
