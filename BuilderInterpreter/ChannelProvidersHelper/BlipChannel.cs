@@ -12,7 +12,7 @@ namespace BuilderInterpreter.ChannelProvidersHelper
         private readonly IStateMachine _stateMachineService;
         private readonly IUserContextService _userContext;
 
-        public BlipChannel(IStateMachine stateMachineService, IUserContextService userContext, )
+        public BlipChannel(IStateMachine stateMachineService, IUserContextService userContext)
         {
             _stateMachineService = stateMachineService;
             _userContext = userContext;
