@@ -31,12 +31,14 @@ namespace BuilderInterpreter
                 var userContext = await _bucketService.GetBucketObjectAsync<UserContext>(bucketIdentifier);
 
                 if (userContext == default)
+                {
                     userContext = new UserContext
                     {
                         Identity = userIdentity,
                         Variables = new Dictionary<string, object>(),
                         Contact = new UserContact()
                     };
+                }
 
                 return userContext;
             });
