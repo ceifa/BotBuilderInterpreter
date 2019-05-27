@@ -14,11 +14,7 @@ namespace BuilderInterpreter
         public async Task<T> GetBucketObjectAsync<T>(string key)
         {
             var json = await GetBucketAsync(key);
-
-            if (string.IsNullOrEmpty(json))
-                return default;
-
-            return JsonConvert.DeserializeObject<T>(json);
+            return string.IsNullOrEmpty(json) ? default : JsonConvert.DeserializeObject<T>(json);
         }
 
         public Task<bool> SetBucketObjectAsync<T>(string key, T document, TimeSpan expiration = default)

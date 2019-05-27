@@ -22,7 +22,7 @@ namespace BuilderInterpreter
                 throw new ArgumentNullException("Authorization header is not present " +
                                                 nameof(_configuration.AuthorizationKey));
 
-            if (!_configuration.AuthorizationKey.StartsWith("Key "))
+            if (!_configuration.AuthorizationKey.StartsWith("Key ", StringComparison.InvariantCulture))
                 throw new InvalidOperationException("Invalid Authorization Key " +
                                                     nameof(_configuration.AuthorizationKey));
 
