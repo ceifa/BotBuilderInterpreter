@@ -40,7 +40,7 @@ namespace BuilderInterpreter
             {
                 var matchCondition = await outputCondition.Conditions.AllAsync(async o =>
                 {
-                    string toCompare;
+                    string toCompare = default;
 
                     switch (o.Source)
                     {
@@ -59,9 +59,6 @@ namespace BuilderInterpreter
                         case ConditionSource.Entity:
                             toCompare = (await userContext.NlpResponse)?.Entities?[o.Entity];
                             break;
-
-                        default:
-                            throw new NotImplementedException(nameof(o.Source));
                     }
 
                     var comparisonType = _comparisonService.GetComparisonType(o.Comparison);
@@ -75,10 +72,9 @@ namespace BuilderInterpreter
                         case ComparisonType.Binary:
                             var binaryComparer = _comparisonService.GetBinaryConditionComparator(o.Comparison);
                             return o.Values.Any(v => binaryComparer(toCompare, v));
-
-                        default:
-                            throw new NotImplementedException(nameof(comparisonType));
                     }
+
+                    return false;
                 });
 
                 if (matchCondition)
