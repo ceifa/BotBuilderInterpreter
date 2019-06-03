@@ -23,4 +23,7 @@
     </Reference>
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="Services\Storage.cs" />
+  </ItemGroup>
 </Project>

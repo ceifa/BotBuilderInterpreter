@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using BuilderInterpreter.Helper;
 using BuilderInterpreter.Interfaces;
 using BuilderInterpreter.Models;
 using BuilderInterpreter.Models.BuilderModels.ActionExecuters;
@@ -68,6 +69,12 @@ namespace BuilderInterpreter
         public StateMachineBuilder AddCustomAction<TCustomAction>() where TCustomAction : class, ICustomAction
         {
             _services.AddSingleton<ICustomAction, TCustomAction>();
+            return this;
+        }
+
+        public StateMachineBuilder UsingMapStorage(IMapStorage mapStorage)
+        {
+            StorageHelper.Storage = mapStorage;
             return this;
         }
 
