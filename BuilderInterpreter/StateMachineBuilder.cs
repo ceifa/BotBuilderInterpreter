@@ -22,12 +22,9 @@ namespace BuilderInterpreter
 
         public IStateMachine Build(Configuration configuration)
         {
-            AddCustomAction<DefaultExecuteScriptAction>()
-                .AddCustomAction<DefaultManageListAction>()
-                .AddCustomAction<DefaultMergeContactAction>()
-                .AddCustomAction<DefaultProcessHttpAction>()
-                .AddCustomAction<DefaultRedirectAction>()
-                .AddCustomAction<DefaultTrackEventAction>();
+            AddCustomAction<DefaultMergeContactAction>()
+            .AddCustomAction<DefaultRedirectAction>()
+            .AddCustomAction<DefaultTrackEventAction>();
 
             if (!IsServiceRegistered<INlpProvider>())
             {

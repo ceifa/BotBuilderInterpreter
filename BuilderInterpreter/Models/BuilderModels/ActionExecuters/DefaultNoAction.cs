@@ -17,7 +17,7 @@ namespace BuilderInterpreter.Models.BuilderModels.ActionExecuters
             _variableService = variableService;
         }
 
-        public CustomActionType ActionType => CustomActionType.Redirect;
+        public CustomActionType ActionType => CustomActionType.NoAction;
 
         public async Task ExecuteActionAsync(UserContext userContext, JObject payload)
         {
@@ -32,16 +32,12 @@ namespace BuilderInterpreter.Models.BuilderModels.ActionExecuters
 
                 if (attr?.Length == 1)
                 {
-                    var token = (NoActionTokenAttribute) attr[0];
+                    var token = (NoActionTokenAttribute)attr[0];
 
                     if (token.Token == settings.Address)
-                        try
-                        {
-                            await (Task) method.Invoke(noAction, new object[] {settings.Context?.Value, userContext});
-                        }
-                        catch
-                        {
-                        }
+                    {
+                        await (Task)method.Invoke(noAction, new object[] { settings.Context?.Value, userContext });
+                    }
                 }
             }
         }

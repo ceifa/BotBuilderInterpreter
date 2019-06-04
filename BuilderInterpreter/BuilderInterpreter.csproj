@@ -28,5 +28,6 @@
     <Compile Remove="Interfaces\IBucketBaseService.cs" />
     <Compile Remove="Interfaces\IBucketService.cs" />
     <Compile Remove="Services\UserContextService.cs" />
+    <Compile Remove="Models\BuilderModels\ActionExecuters\DefaultManageListAction.cs" />
   </ItemGroup>
 </Project>
