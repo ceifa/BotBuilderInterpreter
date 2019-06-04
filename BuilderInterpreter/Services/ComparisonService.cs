@@ -19,6 +19,7 @@ namespace BuilderInterpreter.Services
                 case ConditionComparison.Equals:
                 case ConditionComparison.NotEquals:
                 case ConditionComparison.Contains:
+                case ConditionComparison.NotContains:
                 case ConditionComparison.StartsWith:
                 case ConditionComparison.EndsWith:
                 case ConditionComparison.GreaterThan:
@@ -48,7 +49,11 @@ namespace BuilderInterpreter.Services
 
                 case ConditionComparison.Contains:
                     return (v1, v2) =>
-                        v1 != null && v2 != null && v1.IndexOf(v2, StringComparison.OrdinalIgnoreCase) >= 0;
+                        v1 != null && v2 != null && v1.Contains(v2, StringComparison.OrdinalIgnoreCase);
+
+                case ConditionComparison.NotContains:
+                    return (v1, v2) =>
+                        v1 != null && v2 != null && !v1.Contains(v2, StringComparison.OrdinalIgnoreCase);
 
                 case ConditionComparison.StartsWith:
                     return (v1, v2) =>
