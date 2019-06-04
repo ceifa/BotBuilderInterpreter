@@ -4,6 +4,7 @@
     {
         TrackEvent,
         MergeContact,
-        NoAction
+        NoAction,
+        SetVariable
     }
 }

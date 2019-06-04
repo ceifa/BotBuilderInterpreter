@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace BuilderInterpreter.Models
 {
-    public class Redirect
+    public class NoAction
     {
         [JsonProperty("address")] public string Address { get; set; }
 

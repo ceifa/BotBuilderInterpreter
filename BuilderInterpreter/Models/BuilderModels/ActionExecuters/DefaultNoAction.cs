@@ -6,12 +6,12 @@ using Newtonsoft.Json.Linq;
 
 namespace BuilderInterpreter.Models.BuilderModels.ActionExecuters
 {
-    internal class DefaultRedirectAction : ICustomAction, IDefaultCustomAction
+    internal class DefaultNoAction : ICustomAction, IDefaultCustomAction
     {
         private readonly IEnumerable<INoAction> _noActions;
         private readonly IVariableService _variableService;
 
-        public DefaultRedirectAction(IEnumerable<INoAction> noActions, IVariableService variableService)
+        public DefaultNoAction(IEnumerable<INoAction> noActions, IVariableService variableService)
         {
             _noActions = noActions;
             _variableService = variableService;
@@ -21,7 +21,7 @@ namespace BuilderInterpreter.Models.BuilderModels.ActionExecuters
 
         public async Task ExecuteActionAsync(UserContext userContext, JObject payload)
         {
-            var settings = payload.ToObject<Redirect>();
+            var settings = payload.ToObject<NoAction>();
 
             settings = await _variableService.ReplaceVariablesInObjectAsync(settings, userContext);
 

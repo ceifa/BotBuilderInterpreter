@@ -23,8 +23,9 @@ namespace BuilderInterpreter
         public IStateMachine Build(Configuration configuration)
         {
             AddCustomAction<DefaultMergeContactAction>()
-            .AddCustomAction<DefaultRedirectAction>()
-            .AddCustomAction<DefaultTrackEventAction>();
+                .AddCustomAction<DefaultRedirectAction>()
+                .AddCustomAction<DefaultTrackEventAction>()
+                .AddCustomAction<DefaultSetVariable>();
 
             if (!IsServiceRegistered<INlpProvider>())
             {
