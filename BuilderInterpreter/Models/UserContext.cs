@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using BuilderInterpreter.Interfaces;
+using BuilderInterpreter.Services;
 
 namespace BuilderInterpreter.Models
 {
-    public class UserContext
+    public class UserContext : StorageData<UserContext>
     {
         public string Identity { get; set; }
 

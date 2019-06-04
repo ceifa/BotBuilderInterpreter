@@ -25,5 +25,8 @@
 
   <ItemGroup>
     <Compile Remove="Services\Storage.cs" />
+    <Compile Remove="Interfaces\IBucketBaseService.cs" />
+    <Compile Remove="Interfaces\IBucketService.cs" />
+    <Compile Remove="Services\UserContextService.cs" />
   </ItemGroup>
 </Project>

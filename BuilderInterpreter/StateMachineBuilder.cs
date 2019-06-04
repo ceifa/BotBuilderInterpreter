@@ -36,10 +36,8 @@ namespace BuilderInterpreter
 
             return _services.AddSingleton(configuration)
                 .AddSingleton<IBlipService, BlipService>()
-                .AddSingleton<IBucketBaseService, BucketBaseService>()
                 .AddSingleton<IBotFlowService, BotFlowService>()
                 .AddSingleton<IBotConfigurationService, BotConfigurationService>()
-                .AddSingleton<IUserContextService, UserContextService>()
                 .AddSingleton<IStateMachine, StateMachine>()
                 .AddSingleton<IUserSemaphoreService, UserSemaphoreService>()
                 .AddSingleton<ITrackEventService, TrackEventService>()

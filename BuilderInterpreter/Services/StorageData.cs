@@ -9,17 +9,17 @@ namespace BuilderInterpreter.Services
     {
         public string Id { get; set; }
 
-        Task DeleteAsync(CancellationToken cancellationToken = default)
+        public Task DeleteAsync(CancellationToken cancellationToken = default)
         {
             return StorageHelper.Storage.RemoveAsync(GetKey(Id), cancellationToken);
         }
 
-        Task AddOrUpdateAsync(CancellationToken cancellationToken = default)
+        public Task AddOrUpdateAsync(CancellationToken cancellationToken = default)
         {
             return StorageHelper.Storage.AddOrUpdateAsync(GetKey(Id), cancellationToken);
         }
 
-        async static Task<T> GetOrCreateAsync(string id, CancellationToken cancellationToken = default)
+        public async static Task<T> GetOrCreateAsync(string id, CancellationToken cancellationToken = default)
         {
             var storageKey = GetKey(id);
             var exists = await ExistsAsync(id, cancellationToken);
@@ -39,7 +39,7 @@ namespace BuilderInterpreter.Services
             return value;
         }
 
-        static Task<bool> ExistsAsync(string id, CancellationToken cancellationToken = default)
+        public static Task<bool> ExistsAsync(string id, CancellationToken cancellationToken = default)
         {
             return StorageHelper.Storage.ContainsKeyAsync(GetKey(id), cancellationToken);
         }

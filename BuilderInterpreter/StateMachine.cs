@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using BuilderInterpreter.Extensions;
 using BuilderInterpreter.Interfaces;
@@ -14,12 +15,10 @@ namespace BuilderInterpreter
         private readonly ICustomActionService _customActionService;
         private readonly INlpProvider _nlpProvider;
         private readonly IStateMachineService _stateMachineService;
-        private readonly IUserContextService _userContext;
         private readonly IUserSemaphoreService _userSemaphoreService;
         private readonly IVariableService _variableService;
 
         public StateMachine(IBotFlowService botFlowService,
-            IUserContextService userContext,
             IUserSemaphoreService userSemaphoreService,
             IVariableService variableService,
             ICustomActionService customActionService,
@@ -27,7 +26,6 @@ namespace BuilderInterpreter
             INlpProvider nlpProvider)
         {
             _botFlowService = botFlowService;
-            _userContext = userContext;
             _userSemaphoreService = userSemaphoreService;
             _variableService = variableService;
             _stateMachineService = stateMachineService;
@@ -35,7 +33,7 @@ namespace BuilderInterpreter
             _nlpProvider = nlpProvider;
         }
 
-        public async Task<Document[]> HandleUserInput(string userIdentity, string input, UserContext userContext)
+        public async Task<Document[]> HandleUserInput(string userIdentity, string input, UserContext userContext, CancellationToken cancellationToken)
         {
             var userSemaphore = await _userSemaphoreService.GetSemaphoreByUserIdentity(userIdentity);
 
@@ -45,7 +43,7 @@ namespace BuilderInterpreter
 
                 var flow = await _botFlowService.GetBotFlow();
 
-                userContext = userContext ?? await _userContext.GetUserContext(userIdentity);
+                userContext = userContext ?? await UserContext.GetOrCreateAsync(userIdentity, cancellationToken);
 
                 var state = _stateMachineService.GetCurrentUserState(userContext, flow);
 
@@ -77,9 +75,10 @@ namespace BuilderInterpreter
                 } while (!state.InteractionActions.Any(x => x.Input?.Bypass == false));
 
                 userContext.StateId = state.Id;
-                await _userContext.SetUserContext(userIdentity, userContext);
+                await userContext.AddOrUpdateAsync(cancellationToken);
 
                 return documents.ToArray();
+
             }
             finally
             {
