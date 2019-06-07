@@ -28,4 +28,7 @@
     <Compile Remove="Services\UserContextService.cs" />
     <Compile Remove="Models\BuilderModels\ActionExecuters\DefaultManageListAction.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BuilderInterpreter.Protocol\BuilderInterpreter.Protocol.csproj" />
+  </ItemGroup>
 </Project>

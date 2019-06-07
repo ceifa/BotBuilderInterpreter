@@ -33,7 +33,7 @@ namespace BuilderInterpreter
             _nlpProvider = nlpProvider;
         }
 
-        public async Task<Document[]> HandleUserInput(string userIdentity, Message input, UserContext userContext, CancellationToken cancellationToken)
+        public async Task<Document[]> HandleUserInput(string userIdentity, Protocol.Message input, UserContext userContext, CancellationToken cancellationToken)
         {
             var userSemaphore = await _userSemaphoreService.GetSemaphoreByUserIdentity(userIdentity);
 
