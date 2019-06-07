@@ -7,6 +7,6 @@ namespace BuilderInterpreter.Interfaces
 {
     public interface IStateMachine
     {
-        Task<Document[]> HandleUserInput(string userIdentity, string input, UserContext userContext, CancellationToken cancellationToken);
+        Task<Document[]> HandleUserInput(string userIdentity, Message input, UserContext userContext, CancellationToken cancellationToken);
     }
 }

@@ -33,7 +33,7 @@ namespace BuilderInterpreter
             _nlpProvider = nlpProvider;
         }
 
-        public async Task<Document[]> HandleUserInput(string userIdentity, string input, UserContext userContext, CancellationToken cancellationToken)
+        public async Task<Document[]> HandleUserInput(string userIdentity, Message input, UserContext userContext, CancellationToken cancellationToken)
         {
             var userSemaphore = await _userSemaphoreService.GetSemaphoreByUserIdentity(userIdentity);
 
@@ -52,7 +52,7 @@ namespace BuilderInterpreter
                     userContext.SetVariable(oldInput.Variable, input);
 
                 userContext.SetVariable("input", input);
-                userContext.PopulateNlpResponse(input, _nlpProvider);
+                userContext.PopulateNlpResponse(input.ToString(), _nlpProvider);
 
                 var documents = new List<Document>();
 
