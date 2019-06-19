@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using BuilderInterpreter.Enums;
 using BuilderInterpreter.Models;
 using Newtonsoft.Json.Linq;
 

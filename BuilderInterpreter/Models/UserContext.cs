@@ -13,9 +13,7 @@ namespace BuilderInterpreter.Models
         public string StateId { get; set; }
 
         public Dictionary<string, object> Variables { get; set; }
-
-        public UserContact Contact { get; set; }
-
+        
         public Task<NlpResponse> NlpResponse => LazyNlpResponse.Value;
 
         private Lazy<Task<NlpResponse>> LazyNlpResponse { get; set; }

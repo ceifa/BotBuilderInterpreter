@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using BuilderInterpreter.Models;
 
-namespace BuilderInterpreter
+namespace BuilderInterpreter.Interfaces
 {
     internal interface IStateMachineService
     {

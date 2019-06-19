@@ -1,4 +1,5 @@
 ﻿using System;
+using BuilderInterpreter.Enums;
 
 namespace BuilderInterpreter.Interfaces
 {

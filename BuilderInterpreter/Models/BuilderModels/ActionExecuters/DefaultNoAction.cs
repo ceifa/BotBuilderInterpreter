@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using BuilderInterpreter.Attributes;
+using BuilderInterpreter.Enums;
 using BuilderInterpreter.Interfaces;
 using Newtonsoft.Json.Linq;
 

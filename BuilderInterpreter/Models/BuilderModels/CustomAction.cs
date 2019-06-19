@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using BuilderInterpreter.Enums;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace BuilderInterpreter.Models

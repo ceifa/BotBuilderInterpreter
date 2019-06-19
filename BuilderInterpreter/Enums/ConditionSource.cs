@@ -1,4 +1,4 @@
-﻿namespace BuilderInterpreter
+﻿namespace BuilderInterpreter.Enums
 {
     internal enum ConditionSource
     {

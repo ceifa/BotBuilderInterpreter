@@ -20,10 +20,9 @@ namespace BuilderInterpreter
             _services = new ServiceCollection();
         }
 
-        public IStateMachine Build(Configuration configuration)
+        public IStateMachine Build()
         {
-            AddCustomAction<DefaultMergeContactAction>()
-                .AddCustomAction<DefaultTrackEventAction>()
+            AddCustomAction<DefaultTrackEventAction>()
                 .AddCustomAction<DefaultSetVariable>();
 
             if (!IsServiceRegistered<INlpProvider>())
@@ -31,8 +30,7 @@ namespace BuilderInterpreter
                 _services.AddSingleton<INlpProvider, DefaultNlpProvider>();
             }
 
-            return _services.AddSingleton(configuration)
-                .AddSingleton<IBotFlowService, BotFlowService>()
+            return _services.AddSingleton<IBotFlowService, BotFlowService>()
                 .AddSingleton<IBotConfigurationService, BotConfigurationService>()
                 .AddSingleton<IStateMachine, StateMachine>()
                 .AddSingleton<IUserSemaphoreService, UserSemaphoreService>()
@@ -41,7 +39,6 @@ namespace BuilderInterpreter
                 .AddSingleton<ICustomActionService, CustomActionService>()
                 .AddSingleton<IComparisonService, ComparisonService>()
                 .AddSingleton<IVariableProvider, ConfigVariableProvider>()
-                .AddSingleton<IVariableProvider, ContactVariableProvider>()
                 .AddSingleton<DocumentSerializer>()
                 .AddMemoryCache()
                 .BuildServiceProvider().GetService<IStateMachine>();

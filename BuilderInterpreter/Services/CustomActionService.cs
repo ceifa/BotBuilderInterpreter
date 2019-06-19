@@ -15,7 +15,7 @@ namespace BuilderInterpreter.Services
             _customActions = customActions;
         }
 
-        public async Task ExecuteCustomActions(CustomAction[] customActions, UserContext userContext)
+        public async Task ExecuteCustomActions(IEnumerable<CustomAction> customActions, UserContext userContext)
         {
             foreach (var customAction in customActions)
             {

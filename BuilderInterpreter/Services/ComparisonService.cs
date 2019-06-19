@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Text.RegularExpressions;
+using BuilderInterpreter.Enums;
 using BuilderInterpreter.Extensions;
 using BuilderInterpreter.Interfaces;
 

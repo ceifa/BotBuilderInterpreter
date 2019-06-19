@@ -1,9 +1,8 @@
-﻿namespace BuilderInterpreter
+﻿namespace BuilderInterpreter.Enums
 {
     public enum CustomActionType
     {
         TrackEvent,
-        MergeContact,
         NoAction,
         SetVariable
     }

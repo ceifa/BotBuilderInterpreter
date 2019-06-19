@@ -5,8 +5,10 @@ namespace BuilderInterpreter.Models
 {
     public class NlpResponse
     {
-        [JsonProperty("intent")] public Intent Intent { get; set; }
+        [JsonProperty("intent")]
+        public Intent Intent { get; set; }
 
-        [JsonProperty("entities")] public Dictionary<string, string> Entities { get; set; }
+        [JsonProperty("entities")]
+        public Dictionary<string, string> Entities { get; set; }
     }
 }
